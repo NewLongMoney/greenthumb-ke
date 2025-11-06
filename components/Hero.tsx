@@ -53,6 +53,8 @@ export default function Hero() {
     videoElement.setAttribute('playsinline', 'true')
     videoElement.setAttribute('webkit-playsinline', 'true')
     videoElement.setAttribute('x5-playsinline', 'true')
+    videoElement.setAttribute('controls', 'false')
+    videoElement.removeAttribute('controls')
     videoElement.muted = true
     videoElement.volume = 0
     videoElement.playsInline = true
@@ -61,6 +63,8 @@ export default function Hero() {
       videoElement.disablePictureInPicture = true
     }
     videoElement.style.pointerEvents = 'none'
+    videoElement.style.webkitAppearance = 'none'
+    videoElement.style.appearance = 'none'
 
     let isMounted = true
 
@@ -123,12 +127,19 @@ export default function Hero() {
       playVideo()
     }
 
-    // Keep trying to play every second if paused
+    // Keep trying to play every 500ms if paused - ensure continuous playback
     const playInterval = setInterval(() => {
-      if (isMounted && videoElement && videoElement.paused && !videoElement.ended) {
-        playVideo()
+      if (isMounted && videoElement) {
+        // If video is paused and not ended, try to play
+        if (videoElement.paused && !videoElement.ended) {
+          playVideo()
+        }
+        // If video ended but we're still on the same index, switch to next
+        if (videoElement.ended) {
+          setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length)
+        }
       }
-    }, 1000)
+    }, 500)
 
     // Auto-switch video every 7 seconds as fallback
     switchTimerRef.current = setTimeout(() => {
@@ -170,18 +181,19 @@ export default function Hero() {
           className="w-full h-full object-cover transition-opacity duration-500"
           poster="/pictures/Hero Poster Image.png"
           aria-label="Hero background video showing lawn care and irrigation services in Kenya"
-          style={{ pointerEvents: 'none' }}
+          style={{ pointerEvents: 'none', WebkitAppearance: 'none', appearance: 'none' }}
           onLoadedData={async (e) => {
             const video = e.currentTarget
             try {
               video.muted = true
               video.volume = 0
               video.controls = false
+              video.setAttribute('controls', 'false')
               if (video.paused) {
                 await video.play()
               }
             } catch (error) {
-              // Autoplay blocked
+              // Autoplay blocked - will retry
             }
           }}
           onCanPlay={async (e) => {
@@ -190,15 +202,30 @@ export default function Hero() {
               video.muted = true
               video.volume = 0
               video.controls = false
+              video.setAttribute('controls', 'false')
               if (video.paused) {
                 await video.play()
               }
             } catch (error) {
-              // Autoplay blocked
+              // Autoplay blocked - will retry
             }
           }}
           onPlay={() => {
-            // Video is playing
+            // Video is playing - ensure controls stay hidden
+            const video = videoRef.current
+            if (video) {
+              video.controls = false
+              video.setAttribute('controls', 'false')
+            }
+          }}
+          onPause={() => {
+            // If video pauses, try to play again
+            const video = videoRef.current
+            if (video && !video.ended) {
+              video.play().catch(() => {
+                // Will retry via interval
+              })
+            }
           }}
         >
           <source src={videos[currentVideoIndex]} type="video/mp4" />
