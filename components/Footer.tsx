@@ -117,6 +117,17 @@ export default function Footer() {
               <p className="text-gray-500 text-xs mt-1">
                 Designed with 💚 for a greener Kenya
               </p>
+              <p className="text-gray-500 text-xs mt-1">
+                Designed by{' '}
+                <a 
+                  href="https://www.captivart.art" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-brand-green hover:text-primary-400 transition-colors underline"
+                >
+                  Captivart Agency
+                </a>
+              </p>
             </div>
           </div>
         </div>
