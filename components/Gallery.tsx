@@ -2,24 +2,64 @@
 
 import { motion } from 'framer-motion'
 import Script from 'next/script'
-import { useEffect } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 export default function Gallery() {
+  const [shouldLoadTikTok, setShouldLoadTikTok] = useState(false)
+  const sectionRef = useRef<HTMLElement>(null)
+
   useEffect(() => {
-    // Reload TikTok embed script when component mounts
-    if (typeof window !== 'undefined' && (window as any).tiktok) {
-      (window as any).tiktok.init()
+    // Use Intersection Observer to lazy load TikTok only when section is visible
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setShouldLoadTikTok(true)
+            observer.disconnect()
+          }
+        })
+      },
+      { rootMargin: '200px' } // Start loading 200px before section is visible
+    )
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current)
     }
+
+    return () => observer.disconnect()
   }, [])
+
+  useEffect(() => {
+    // Reload TikTok embed script when component mounts and script is loaded
+    if (shouldLoadTikTok && typeof window !== 'undefined' && (window as any).tiktok) {
+      (window as any).tiktok.init()
+      
+      // Add titles to dynamically created iframes for accessibility
+      const addIframeTitles = () => {
+        const iframes = document.querySelectorAll('iframe[name^="__tt_embed__"]')
+        iframes.forEach((iframe) => {
+          if (!iframe.getAttribute('title')) {
+            iframe.setAttribute('title', 'TikTok feed from @greenthumbkenya')
+          }
+        })
+      }
+      
+      // Check for iframes after a delay
+      setTimeout(addIframeTitles, 1000)
+      setTimeout(addIframeTitles, 3000)
+    }
+  }, [shouldLoadTikTok])
 
   return (
     <>
-      <Script 
-        src="https://www.tiktok.com/embed.js" 
-        strategy="lazyOnload"
-      />
+      {shouldLoadTikTok && (
+        <Script 
+          src="https://www.tiktok.com/embed.js" 
+          strategy="lazyOnload"
+        />
+      )}
       
-      <section id="gallery" className="py-20 bg-gray-50">
+      <section ref={sectionRef} id="gallery" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
           <motion.div
@@ -54,6 +94,7 @@ export default function Gallery() {
                   data-unique-id="greenthumbkenya" 
                   data-embed-type="creator"
                   style={{ maxWidth: '100%', minWidth: '288px' }}
+                  title="TikTok feed from @greenthumbkenya"
                 >
                   <section>
                     <a 

@@ -96,11 +96,13 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <head>
         {/* Preconnect to external domains for faster loading */}
-        <link rel="preconnect" href="https://www.tiktok.com" />
-        <link rel="preconnect" href="https://www.facebook.com" />
-        <link rel="preconnect" href="https://www.instagram.com" />
+        <link rel="preconnect" href="https://www.tiktok.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://p16-sign-va.tiktokcdn.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://www.facebook.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://www.instagram.com" crossOrigin="anonymous" />
         {/* DNS prefetch for faster external resource loading */}
         <link rel="dns-prefetch" href="https://www.tiktok.com" />
+        <link rel="dns-prefetch" href="https://p16-sign-va.tiktokcdn.com" />
         <link rel="dns-prefetch" href="https://www.facebook.com" />
         <link rel="dns-prefetch" href="https://www.instagram.com" />
       </head>
