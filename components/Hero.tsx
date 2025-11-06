@@ -71,56 +71,39 @@ export default function Hero() {
     videoElement.muted = true
     videoElement.volume = 0
     videoElement.playsInline = true
+    videoElement.controls = false
+    videoElement.disablePictureInPicture = true
+    videoElement.style.pointerEvents = 'none'
 
     let isMounted = true
 
-    // Comprehensive video play function
+    // Simple video play function - always try to play
     const playVideo = async () => {
       if (!videoElement || !isMounted) return
 
       try {
-        // Ensure video is properly configured
         videoElement.muted = true
         videoElement.volume = 0
+        videoElement.controls = false
         
-        // Check if video has enough data
-        if (videoElement.readyState >= 2) {
+        // Always try to play - browser will handle it
+        if (videoElement.paused) {
           await videoElement.play()
           if (isMounted) {
             setIsVideoReady(true)
           }
         }
       } catch (error) {
-        // Autoplay was prevented - this is expected on some mobile browsers
-        // Video will play on user interaction instead
+        // Autoplay was prevented - video will play on user interaction
         if (isMounted) {
           setIsVideoReady(false)
         }
       }
     }
 
-    // Handle video loaded and ready events
-    const handleCanPlay = async () => {
-      if (isMounted && videoElement) {
-        await playVideo()
-      }
-    }
-
-    const handleCanPlayThrough = async () => {
-      if (isMounted && videoElement) {
-        await playVideo()
-      }
-    }
-
-    const handleLoadedData = async () => {
-      if (isMounted && videoElement) {
-        await playVideo()
-      }
-    }
-
-    const handleLoadedMetadata = () => {
-      if (isMounted && videoElement) {
-        // Try to play when metadata is loaded
+    // Handle video can play - try to play
+    const handleCanPlay = () => {
+      if (isMounted && videoElement && videoElement.paused) {
         playVideo()
       }
     }
@@ -128,6 +111,11 @@ export default function Hero() {
     // Handle video end - switch to next video
     const handleVideoEnd = () => {
       if (isMounted) {
+        // Clear any existing timer
+        if (switchTimerRef.current) {
+          clearTimeout(switchTimerRef.current)
+        }
+        // Switch to next video
         setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length)
       }
     }
@@ -135,31 +123,61 @@ export default function Hero() {
     // Handle video errors
     const handleError = (e: Event) => {
       console.error('Video error:', e)
-      if (isMounted && videoElement) {
-        // Don't hide video, just log the error
-        // The poster image will show as fallback
-      }
     }
 
     // Add event listeners
-    videoElement.addEventListener('canplay', handleCanPlay, { once: true })
-    videoElement.addEventListener('canplaythrough', handleCanPlayThrough, { once: true })
-    videoElement.addEventListener('loadeddata', handleLoadedData, { once: true })
-    videoElement.addEventListener('loadedmetadata', handleLoadedMetadata, { once: true })
+    videoElement.addEventListener('canplay', handleCanPlay)
+    videoElement.addEventListener('canplaythrough', handleCanPlay)
+    videoElement.addEventListener('loadeddata', handleCanPlay)
     videoElement.addEventListener('ended', handleVideoEnd)
     videoElement.addEventListener('error', handleError)
 
-    // Load the video
+    // Load the video source
     videoElement.load()
 
-    // Try to play immediately if video is already loaded
-    if (videoElement.readyState >= 2) {
-      playVideo()
+    // Try to play when video loads - use multiple attempts
+    const tryPlay = async () => {
+      if (videoElement && isMounted) {
+        if (videoElement.readyState >= 2) {
+          await playVideo()
+        } else {
+          // Wait a bit and try again
+          setTimeout(async () => {
+            if (videoElement && isMounted && videoElement.readyState >= 2) {
+              await playVideo()
+            }
+          }, 300)
+        }
+      }
     }
 
-    // Auto-switch video every 7 seconds as fallback (in case video doesn't end naturally)
+    // Try immediately if already loaded
+    if (videoElement.readyState >= 2) {
+      playVideo()
+    } else {
+      // Wait for video to load
+      tryPlay()
+    }
+
+    // Also try after a delay to ensure video is ready
+    const playTimeout = setTimeout(() => {
+      if (isMounted && videoElement && videoElement.paused) {
+        playVideo()
+      }
+    }, 500)
+
+    // Keep trying to play if video is paused - ensure continuous playback
+    const retryPlayInterval = setInterval(() => {
+      if (isMounted && videoElement) {
+        if (videoElement.paused && !videoElement.ended) {
+          playVideo()
+        }
+      }
+    }, 1000)
+
+    // Auto-switch video every 7 seconds as fallback (only if video hasn't ended)
     switchTimerRef.current = setTimeout(() => {
-      if (isMounted) {
+      if (isMounted && videoElement && !videoElement.ended) {
         setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length)
       }
     }, 7000)
@@ -167,13 +185,16 @@ export default function Hero() {
     // Cleanup
     return () => {
       isMounted = false
+      clearTimeout(playTimeout)
+      if (retryPlayInterval) {
+        clearInterval(retryPlayInterval)
+      }
       if (switchTimerRef.current) {
         clearTimeout(switchTimerRef.current)
       }
       videoElement.removeEventListener('canplay', handleCanPlay)
-      videoElement.removeEventListener('canplaythrough', handleCanPlayThrough)
-      videoElement.removeEventListener('loadeddata', handleLoadedData)
-      videoElement.removeEventListener('loadedmetadata', handleLoadedMetadata)
+      videoElement.removeEventListener('canplaythrough', handleCanPlay)
+      videoElement.removeEventListener('loadeddata', handleCanPlay)
       videoElement.removeEventListener('ended', handleVideoEnd)
       videoElement.removeEventListener('error', handleError)
     }
@@ -181,10 +202,19 @@ export default function Hero() {
 
   // Handle video play when user interacts (after initial load)
   useEffect(() => {
-    if (hasUserInteracted && videoRef.current && videoRef.current.paused) {
-      videoRef.current.play().catch(() => {
-        // Ignore errors
-      })
+    if (hasUserInteracted && videoRef.current) {
+      const video = videoRef.current
+      if (video.paused) {
+        video.muted = true
+        video.volume = 0
+        video.play()
+          .then(() => {
+            setIsVideoReady(true)
+          })
+          .catch(() => {
+            // Ignore errors
+          })
+      }
     }
   }, [hasUserInteracted])
 
@@ -199,11 +229,44 @@ export default function Hero() {
           muted
           playsInline
           preload="auto"
+          loop={false}
+          controls={false}
+          disablePictureInPicture
+          disableRemotePlayback
           className="w-full h-full object-cover transition-opacity duration-500"
           poster="/pictures/Hero Poster Image.png"
           aria-label="Hero background video showing lawn care and irrigation services in Kenya"
-          style={{
-            opacity: isVideoReady ? 1 : 0.7,
+          style={{ pointerEvents: 'none' }}
+          onLoadedData={async (e) => {
+            const video = e.currentTarget
+            try {
+              video.muted = true
+              video.volume = 0
+              video.controls = false
+              if (video.paused) {
+                await video.play()
+                setIsVideoReady(true)
+              }
+            } catch (error) {
+              // Autoplay blocked - will play on user interaction
+            }
+          }}
+          onCanPlay={async (e) => {
+            const video = e.currentTarget
+            try {
+              video.muted = true
+              video.volume = 0
+              video.controls = false
+              if (video.paused) {
+                await video.play()
+                setIsVideoReady(true)
+              }
+            } catch (error) {
+              // Autoplay blocked - will play on user interaction
+            }
+          }}
+          onPlay={() => {
+            setIsVideoReady(true)
           }}
         >
           <source src={videos[currentVideoIndex]} type="video/mp4" />
@@ -224,7 +287,7 @@ export default function Hero() {
       </div>
 
       {/* Hero Content */}
-      <div className="relative z-10 h-full flex items-center pt-16 md:pt-0">
+      <div className="relative z-10 h-full flex items-center pt-8 md:pt-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-4xl mx-auto text-center">
             {/* Main Headline */}
