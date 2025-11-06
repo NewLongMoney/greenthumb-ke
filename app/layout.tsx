@@ -10,6 +10,10 @@ const montserrat = Montserrat({
   subsets: ['latin'],
   variable: '--font-montserrat',
   display: 'swap',
+  preload: true,
+  fallback: ['system-ui', 'arial'],
+  adjustFontFallback: true,
+  weight: ['400', '600', '700'],
 })
 
 export const metadata: Metadata = {
@@ -95,21 +99,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
-        {/* Preload hero videos for instant playback */}
-        <link rel="preload" href="/videos/Greenthumb Website Shot 1.mp4" as="video" type="video/mp4" fetchPriority="high" />
-        <link rel="preload" href="/videos/Greenthumb Website Shot 2.mp4" as="video" type="video/mp4" />
-        <link rel="preload" href="/videos/Greenthumb Website Shot 3.mp4" as="video" type="video/mp4" />
-        <link rel="preload" href="/videos/Greenthumb Website Shot 4.mp4" as="video" type="video/mp4" />
-        {/* Preconnect to external domains for faster loading */}
-        <link rel="preconnect" href="https://www.tiktok.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://p16-sign-va.tiktokcdn.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://www.facebook.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://www.instagram.com" crossOrigin="anonymous" />
-        {/* DNS prefetch for faster external resource loading */}
+        {/* DNS prefetch for external resources - only when needed */}
         <link rel="dns-prefetch" href="https://www.tiktok.com" />
-        <link rel="dns-prefetch" href="https://p16-sign-va.tiktokcdn.com" />
-        <link rel="dns-prefetch" href="https://www.facebook.com" />
-        <link rel="dns-prefetch" href="https://www.instagram.com" />
       </head>
       <body className={`${montserrat.variable} font-sans antialiased`}>
         <StructuredData />

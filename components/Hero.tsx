@@ -19,6 +19,38 @@ export default function Hero() {
     '/videos/Greenthumb Website Shot 4.mp4',
   ]
 
+  // Continuous monitoring to ensure videos never pause
+  useEffect(() => {
+    const monitorVideos = () => {
+      const video1 = video1Ref.current
+      const video2 = video2Ref.current
+      
+      const forcePlay = async (video: HTMLVideoElement | null) => {
+        if (!video) return
+        if (video.paused && !video.ended) {
+          try {
+            video.muted = true
+            video.volume = 0
+            await video.play()
+          } catch (error) {
+            // Retry immediately
+            setTimeout(() => forcePlay(video), 100)
+          }
+        }
+      }
+      
+      forcePlay(video1)
+      forcePlay(video2)
+    }
+
+    // Check every 100ms to ensure videos never pause
+    const monitorInterval = setInterval(monitorVideos, 100)
+    
+    return () => {
+      clearInterval(monitorInterval)
+    }
+  }, [])
+
   // Initialize first video
   useEffect(() => {
     const currentVideo = video1Ref.current
@@ -35,11 +67,14 @@ export default function Hero() {
 
     const playVideo = async () => {
       try {
+        currentVideo.muted = true
+        currentVideo.volume = 0
         if (currentVideo.paused) {
           await currentVideo.play()
         }
       } catch (error) {
-        // Autoplay blocked
+        // Retry immediately
+        setTimeout(() => playVideo(), 100)
       }
     }
 
@@ -47,8 +82,24 @@ export default function Hero() {
       playVideo()
     }
 
+    const handlePause = () => {
+      // Immediately resume if paused
+      playVideo()
+    }
+
+    const handleWaiting = () => {
+      // Resume when buffering completes
+      const resumeOnCanPlay = () => {
+        playVideo()
+        currentVideo.removeEventListener('canplay', resumeOnCanPlay)
+      }
+      currentVideo.addEventListener('canplay', resumeOnCanPlay, { once: true })
+    }
+
     currentVideo.addEventListener('canplay', handleCanPlay, { once: true })
     currentVideo.addEventListener('loadeddata', handleCanPlay, { once: true })
+    currentVideo.addEventListener('pause', handlePause)
+    currentVideo.addEventListener('waiting', handleWaiting)
     
     if (currentVideo.readyState >= 2) {
       playVideo()
@@ -57,6 +108,8 @@ export default function Hero() {
     return () => {
       currentVideo.removeEventListener('canplay', handleCanPlay)
       currentVideo.removeEventListener('loadeddata', handleCanPlay)
+      currentVideo.removeEventListener('pause', handlePause)
+      currentVideo.removeEventListener('waiting', handleWaiting)
     }
   }, [])
 
@@ -69,6 +122,35 @@ export default function Hero() {
     let isMounted = true
     let hasSwitched = false
 
+    // Ensure current video never pauses
+    const forceCurrentPlay = async () => {
+      if (!isMounted || !currentVideo || hasSwitched) return
+      if (currentVideo.paused && !currentVideo.ended) {
+        try {
+          currentVideo.muted = true
+          currentVideo.volume = 0
+          await currentVideo.play()
+        } catch (error) {
+          setTimeout(() => forceCurrentPlay(), 100)
+        }
+      }
+    }
+
+    const handleCurrentPause = () => {
+      forceCurrentPlay()
+    }
+
+    const handleCurrentWaiting = () => {
+      const resumeOnCanPlay = () => {
+        forceCurrentPlay()
+        currentVideo.removeEventListener('canplay', resumeOnCanPlay)
+      }
+      currentVideo.addEventListener('canplay', resumeOnCanPlay, { once: true })
+    }
+
+    currentVideo.addEventListener('pause', handleCurrentPause)
+    currentVideo.addEventListener('waiting', handleCurrentWaiting)
+
     // Preload next video
     const nextIndex = (currentVideoIndex + 1) % videos.length
     nextVideo.muted = true
@@ -80,35 +162,47 @@ export default function Hero() {
     nextVideo.src = videos[nextIndex]
     nextVideo.load()
 
+    // Ensure next video is ready to play
+    const ensureNextVideoReady = async () => {
+      if (!isMounted || !nextVideo) return
+      if (nextVideo.readyState < 3) {
+        const waitForReady = () => {
+          return new Promise<void>((resolve) => {
+            if (nextVideo.readyState >= 3) {
+              resolve()
+            } else {
+              const onCanPlay = () => {
+                nextVideo.removeEventListener('canplay', onCanPlay)
+                resolve()
+              }
+              nextVideo.addEventListener('canplay', onCanPlay, { once: true })
+            }
+          })
+        }
+        await waitForReady()
+      }
+    }
+
     const switchToNextVideo = async () => {
       if (!isMounted || hasSwitched) return
       hasSwitched = true
 
       // Prepare next video
       nextVideo.currentTime = 0
-      
-      // Wait for next video to be ready
-      const waitForReady = () => {
-        return new Promise<void>((resolve) => {
-          if (nextVideo.readyState >= 3) {
-            resolve()
-          } else {
-            const onCanPlay = () => {
-              nextVideo.removeEventListener('canplay', onCanPlay)
-              resolve()
-            }
-            nextVideo.addEventListener('canplay', onCanPlay, { once: true })
-          }
-        })
-      }
+      await ensureNextVideoReady()
 
-      await waitForReady()
-
-      // Play next video
+      // Play next video immediately
       try {
+        nextVideo.muted = true
+        nextVideo.volume = 0
         await nextVideo.play()
       } catch (error) {
-        // Ignore
+        // Retry immediately
+        setTimeout(() => {
+          if (isMounted && nextVideo) {
+            nextVideo.play().catch(() => {})
+          }
+        }, 100)
       }
 
       // Switch active video
@@ -131,6 +225,8 @@ export default function Hero() {
 
     const handleTimeUpdate = () => {
       checkTime()
+      // Also check if paused during time update
+      forceCurrentPlay()
     }
 
     const handleVideoEnd = () => {
@@ -158,23 +254,36 @@ export default function Hero() {
       }
       currentVideo.removeEventListener('timeupdate', handleTimeUpdate)
       currentVideo.removeEventListener('ended', handleVideoEnd)
+      currentVideo.removeEventListener('pause', handleCurrentPause)
+      currentVideo.removeEventListener('waiting', handleCurrentWaiting)
     }
   }, [currentVideoIndex, activeVideo, videos])
 
-  // Handle user interaction for autoplay
+  // Handle user interaction for autoplay - ensure videos play on any interaction
   useEffect(() => {
     const handleInteraction = async () => {
-      const currentVideo = activeVideo === 'video1' ? video1Ref.current : video2Ref.current
-      if (currentVideo?.paused) {
-        try {
-          await currentVideo.play()
-        } catch (error) {
-          // Ignore
+      const video1 = video1Ref.current
+      const video2 = video2Ref.current
+      
+      const playVideo = async (video: HTMLVideoElement | null) => {
+        if (!video) return
+        if (video.paused) {
+          try {
+            video.muted = true
+            video.volume = 0
+            await video.play()
+          } catch (error) {
+            // Retry
+            setTimeout(() => playVideo(video), 100)
+          }
         }
       }
+      
+      playVideo(video1)
+      playVideo(video2)
     }
 
-    const events = ['touchstart', 'click', 'scroll']
+    const events = ['touchstart', 'click', 'scroll', 'mousemove', 'keydown']
     events.forEach(event => {
       document.addEventListener(event, handleInteraction, { once: true, passive: true })
     })
@@ -184,7 +293,7 @@ export default function Hero() {
         document.removeEventListener(event, handleInteraction)
       })
     }
-  }, [activeVideo])
+  }, [])
 
   return (
     <section className="relative h-screen w-full overflow-hidden pt-24 md:pt-20">
@@ -207,11 +316,28 @@ export default function Hero() {
           aria-label="Hero background video"
           style={{ pointerEvents: 'none' }}
           fetchPriority="high"
+          onPause={(e) => {
+            // Immediately resume if paused
+            const video = e.currentTarget
+            video.play().catch(() => {
+              setTimeout(() => video.play(), 100)
+            })
+          }}
+          onWaiting={(e) => {
+            // Resume when buffering completes
+            const video = e.currentTarget
+            const resumeOnCanPlay = () => {
+              video.play().catch(() => {})
+              video.removeEventListener('canplay', resumeOnCanPlay)
+            }
+            video.addEventListener('canplay', resumeOnCanPlay, { once: true })
+          }}
         />
         
         {/* Secondary Video for seamless switching */}
         <video
           ref={video2Ref}
+          autoPlay
           muted
           playsInline
           preload="auto"
@@ -224,6 +350,22 @@ export default function Hero() {
           }`}
           aria-label="Hero background video"
           style={{ pointerEvents: 'none' }}
+          onPause={(e) => {
+            // Immediately resume if paused
+            const video = e.currentTarget
+            video.play().catch(() => {
+              setTimeout(() => video.play(), 100)
+            })
+          }}
+          onWaiting={(e) => {
+            // Resume when buffering completes
+            const video = e.currentTarget
+            const resumeOnCanPlay = () => {
+              video.play().catch(() => {})
+              video.removeEventListener('canplay', resumeOnCanPlay)
+            }
+            video.addEventListener('canplay', resumeOnCanPlay, { once: true })
+          }}
         />
         
         <div className="absolute inset-0 video-overlay z-20" />

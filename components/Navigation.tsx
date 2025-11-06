@@ -2,8 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import dynamic from 'next/dynamic'
 import { Menu, X, ChevronDown } from 'lucide-react'
-import Logo from './Logo'
+
+// Lazy load Logo component
+const Logo = dynamic(() => import('./Logo'), { ssr: true })
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)

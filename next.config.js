@@ -21,15 +21,24 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  // Reduce bundle size
+  // Aggressive performance optimizations
+  experimental: {
+    optimizeCss: true,
+    optimizePackageImports: ['framer-motion', 'lucide-react'],
+  },
+  // Aggressive bundle size reduction
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.optimization = {
         ...config.optimization,
         moduleIds: 'deterministic',
         runtimeChunk: 'single',
+        usedExports: true,
+        sideEffects: false,
         splitChunks: {
           chunks: 'all',
+          minSize: 20000,
+          maxSize: 244000,
           cacheGroups: {
             default: false,
             vendors: false,
@@ -39,6 +48,18 @@ const nextConfig = {
               test: /(?<!node_modules.*)[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types|use-subscription)[\\/]/,
               priority: 40,
               enforce: true,
+            },
+            framerMotion: {
+              name: 'framer-motion',
+              test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
+              priority: 35,
+              chunks: 'all',
+            },
+            lucide: {
+              name: 'lucide',
+              test: /[\\/]node_modules[\\/]lucide-react[\\/]/,
+              priority: 35,
+              chunks: 'all',
             },
             lib: {
               test(module) {

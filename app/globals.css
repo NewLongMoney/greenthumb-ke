@@ -2,9 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Performance optimizations */
+/* Aggressive performance optimizations */
+* {
+  will-change: auto;
+}
+
 img, video {
   content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+/* Optimize font rendering */
+body {
+  text-rendering: optimizeSpeed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Hide video controls completely - no play/pause buttons */
