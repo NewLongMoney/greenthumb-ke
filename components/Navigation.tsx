@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ChevronDown } from 'lucide-react'
+import Logo from './Logo'
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -37,19 +38,17 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <motion.div
+          <motion.a
+            href="/"
             whileHover={{ scale: 1.05 }}
             className="flex items-center space-x-3"
           >
-            <div className="text-2xl font-bold">
-              <span className={`${isScrolled ? 'text-primary-700' : 'text-white'}`}>
-                GreenThumb
-              </span>
-              <span className={`${isScrolled ? 'text-brand-green' : 'text-brand-green'}`}>
-                {' '}KE
-              </span>
-            </div>
-          </motion.div>
+            {isScrolled ? (
+              <Logo variant="full" light={false} width={200} height={60} />
+            ) : (
+              <Logo variant="full" light={true} width={200} height={60} />
+            )}
+          </motion.a>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">

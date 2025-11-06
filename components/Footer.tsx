@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Facebook, Instagram, Twitter, Linkedin, Mail, Phone, MapPin } from 'lucide-react'
+import Logo from './Logo'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -18,10 +19,7 @@ export default function Footer() {
               viewport={{ once: true }}
               className="mb-6"
             >
-              <h3 className="text-2xl font-bold mb-2">
-                <span className="text-white">GreenThumb</span>
-                <span className="text-brand-green"> KE</span>
-              </h3>
+              <Logo variant="full" light={false} width={200} height={60} className="mb-4" />
               <p className="text-gray-400 text-lg mb-4">
                 Transforming landscapes, inspiring lives.
               </p>

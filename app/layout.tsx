@@ -12,6 +12,11 @@ export const metadata: Metadata = {
   title: 'GreenThumb KE - Transforming Landscapes, Inspiring Lives',
   description: 'Professional lawn care, irrigation systems, garden services, and hydroponics in Kenya. Sustainable landscape solutions for your home or business.',
   keywords: ['lawn care Kenya', 'irrigation systems', 'hydroponics', 'garden services', 'landscape design'],
+  icons: {
+    icon: '/logos/favicon.ico',
+    shortcut: '/logos/favicon.ico',
+    apple: '/logos/logo-icon.png',
+  },
 }
 
 export default function RootLayout({
