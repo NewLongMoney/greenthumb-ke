@@ -10,21 +10,21 @@ export default function WhyUs() {
       title: 'Sustainability-Driven',
       description:
         'We use water-wise technology and eco-conscious methods to reduce your footprint and ours. Every solution is designed with the planet in mind.',
-      color: 'from-emerald-500 to-teal-600',
+      color: 'from-brand-green to-primary-600',
     },
     {
       icon: <Lightbulb className="w-12 h-12" />,
       title: 'Whole-System Experts',
       description:
         'We master the science of both traditional landscapes and innovative hydroponic systems. Our expertise spans the full spectrum of green solutions.',
-      color: 'from-amber-500 to-orange-600',
+      color: 'from-brand-green to-primary-500',
     },
     {
       icon: <Users className="w-12 h-12" />,
       title: 'People-First Design',
       description:
         'Your space is designed to inspire you, whether it\'s for play, food, or peace of mind. We create environments that enhance your quality of life.',
-      color: 'from-blue-500 to-indigo-600',
+      color: 'from-primary-600 to-brand-green',
     },
   ]
 
@@ -106,7 +106,7 @@ export default function WhyUs() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="text-center"
             >
-              <div className="text-4xl md:text-5xl font-bold text-primary-600 mb-2">
+              <div className="text-4xl md:text-5xl font-bold text-brand-green mb-2">
                 {stat.number}
               </div>
               <div className="text-gray-600 font-medium">{stat.label}</div>

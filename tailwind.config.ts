@@ -10,20 +10,21 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          50: '#f0fdf4',
-          100: '#dcfce7',
-          200: '#bbf7d0',
-          300: '#86efac',
-          400: '#4ade80',
-          500: '#22c55e',
-          600: '#16a34a',
-          700: '#15803d',
-          800: '#166534',
-          900: '#14532d',
+          50: '#f5f9ed',
+          100: '#e8f0d6',
+          200: '#d1e1ad',
+          300: '#b3cc7a',
+          400: '#80a536', // Main brand color
+          500: '#6b8d2e',
+          600: '#557026',
+          700: '#455a20',
+          800: '#3a4a1c',
+          900: '#323f1a',
         },
-        accent: {
-          lime: '#84cc16',
-          emerald: '#10b981',
+        brand: {
+          green: '#80a536', // Main brand green
+          dark: '#557026',
+          light: '#b3cc7a',
         }
       },
       fontFamily: {

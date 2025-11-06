@@ -21,7 +21,7 @@ export default function ServiceGrid() {
       id: 'lawn-care',
       title: 'Lawn Care Services',
       icon: <Scissors className="w-12 h-12" />,
-      image: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      image: '/images/services/lawn-care.jpg', // Use actual image path or fallback to gradient
       pitch: 'Perfection in Every Blade',
       description: 'Professional lawn maintenance that transforms your outdoor space into a pristine, healthy green oasis.',
     },
@@ -29,7 +29,7 @@ export default function ServiceGrid() {
       id: 'irrigation',
       title: 'Irrigation Systems',
       icon: <Droplets className="w-12 h-12" />,
-      image: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
+      image: '/images/services/irrigation.jpg', // Use actual image path or fallback to gradient
       pitch: 'Smart Water, Smarter Gardens',
       description: 'Advanced irrigation solutions that save water, reduce costs, and keep your landscape thriving year-round.',
     },
@@ -37,7 +37,7 @@ export default function ServiceGrid() {
       id: 'garden',
       title: 'Garden Services',
       icon: <Sprout className="w-12 h-12" />,
-      image: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+      image: '/images/services/garden.jpg', // Use actual image path or fallback to gradient
       pitch: 'Where Beauty Meets Nature',
       description: 'Complete garden design and maintenance services that create stunning outdoor spaces tailored to your vision.',
     },
@@ -45,7 +45,7 @@ export default function ServiceGrid() {
       id: 'hydroponics',
       title: 'Hydroponics',
       icon: <Leaf className="w-12 h-12" />,
-      image: 'linear-gradient(135deg, #84cc16 0%, #22c55e 100%)',
+      image: '/images/services/hydroponics.jpg', // Use actual image path or fallback to gradient
       pitch: 'Future Growth',
       description: 'Revolutionary soilless food production systems for your home or business—sustainable, efficient, and innovative.',
     },
@@ -84,10 +84,14 @@ export default function ServiceGrid() {
               onMouseLeave={() => setHoveredService(null)}
               className="relative h-96 rounded-2xl overflow-hidden shadow-xl cursor-pointer group"
             >
-              {/* Background with gradient (placeholder for images) */}
+              {/* Background with image or gradient */}
               <div
-                className="absolute inset-0 transition-transform duration-500 group-hover:scale-110"
-                style={{ background: service.image }}
+                className="absolute inset-0 transition-transform duration-500 group-hover:scale-110 bg-cover bg-center"
+                style={
+                  service.image.startsWith('/') || service.image.startsWith('http')
+                    ? { backgroundImage: `url(${service.image})` }
+                    : { background: service.image }
+                }
               />
 
               {/* Overlay */}
@@ -124,7 +128,7 @@ export default function ServiceGrid() {
                       exit={{ opacity: 0, y: 20 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <p className="text-accent-lime text-xl font-semibold mb-3">
+                      <p className="text-brand-green text-xl font-semibold mb-3">
                         {service.pitch}
                       </p>
                       <p className="text-white/90 text-base mb-4 leading-relaxed">
@@ -133,7 +137,7 @@ export default function ServiceGrid() {
                       <motion.a
                         href={`#${service.id}`}
                         whileHover={{ x: 5 }}
-                        className="inline-flex items-center space-x-2 text-white font-semibold hover:text-accent-lime transition-colors"
+                        className="inline-flex items-center space-x-2 text-white font-semibold hover:text-brand-green transition-colors"
                       >
                         <span>Learn More</span>
                         <ArrowRight className="w-5 h-5" />
@@ -149,7 +153,7 @@ export default function ServiceGrid() {
                     scaleX: hoveredService === service.id ? 1 : 0,
                   }}
                   transition={{ duration: 0.3 }}
-                  className="absolute bottom-0 left-0 right-0 h-1 bg-accent-lime origin-left"
+                  className="absolute bottom-0 left-0 right-0 h-1 bg-brand-green origin-left"
                 />
               </div>
             </motion.div>

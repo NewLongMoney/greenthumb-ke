@@ -5,12 +5,12 @@ import { Phone, Mail, MessageCircle } from 'lucide-react'
 
 export default function FinalCTA() {
   return (
-    <section id="contact" className="py-20 bg-gradient-to-br from-primary-800 via-primary-700 to-emerald-700 relative overflow-hidden">
+    <section id="contact" className="py-20 bg-gradient-to-br from-primary-800 via-primary-700 to-primary-600 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-white rounded-full mix-blend-overlay filter blur-3xl animate-blob" />
-        <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-accent-lime rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-2000" />
-        <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-emerald-300 rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-4000" />
+        <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-brand-green rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-2000" />
+        <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-primary-300 rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-4000" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -37,7 +37,7 @@ export default function FinalCTA() {
               href="mailto:254greenthumb@gmail.com"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              className="group bg-white text-primary-700 px-8 py-4 rounded-lg font-bold text-lg shadow-2xl hover:shadow-white/30 flex items-center space-x-3 min-w-[260px] justify-center transition-all"
+              className="group bg-white text-gray-900 px-8 py-4 rounded-lg font-bold text-lg shadow-2xl hover:shadow-white/30 flex items-center space-x-3 min-w-[260px] justify-center transition-all"
             >
               <Mail className="w-6 h-6" />
               <span>Get a Free Quote</span>
@@ -47,7 +47,7 @@ export default function FinalCTA() {
               href="tel:0702005560"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              className="group bg-accent-lime text-white px-8 py-4 rounded-lg font-bold text-lg shadow-2xl hover:shadow-accent-lime/30 flex items-center space-x-3 min-w-[260px] justify-center transition-all"
+              className="group bg-brand-green text-white px-8 py-4 rounded-lg font-bold text-lg shadow-2xl hover:shadow-brand-green/30 flex items-center space-x-3 min-w-[260px] justify-center transition-all"
             >
               <Phone className="w-6 h-6" />
               <span>Call: 0702 005 560</span>
@@ -64,24 +64,24 @@ export default function FinalCTA() {
           >
             {/* Phone 1 */}
             <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 hover:bg-white/20 transition-all">
-              <Phone className="w-8 h-8 text-accent-lime mx-auto mb-4" />
+              <Phone className="w-8 h-8 text-brand-green mx-auto mb-4" />
               <h3 className="text-white font-semibold text-lg mb-2">Call Us</h3>
-              <a href="tel:0702005560" className="text-white/90 hover:text-accent-lime transition-colors text-lg font-medium">
+              <a href="tel:0702005560" className="text-white/90 hover:text-brand-green transition-colors text-lg font-medium">
                 0702 005 560
               </a>
               <p className="text-white/70 text-sm mt-1">or</p>
-              <a href="tel:0704096417" className="text-white/90 hover:text-accent-lime transition-colors text-lg font-medium">
+              <a href="tel:0704096417" className="text-white/90 hover:text-brand-green transition-colors text-lg font-medium">
                 0704 096 417
               </a>
             </div>
 
             {/* Email */}
             <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 hover:bg-white/20 transition-all">
-              <Mail className="w-8 h-8 text-accent-lime mx-auto mb-4" />
+              <Mail className="w-8 h-8 text-brand-green mx-auto mb-4" />
               <h3 className="text-white font-semibold text-lg mb-2">Email Us</h3>
               <a
                 href="mailto:254greenthumb@gmail.com"
-                className="text-white/90 hover:text-accent-lime transition-colors break-all"
+                className="text-white/90 hover:text-brand-green transition-colors break-all"
               >
                 254greenthumb@gmail.com
               </a>
@@ -89,13 +89,13 @@ export default function FinalCTA() {
 
             {/* WhatsApp */}
             <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 hover:bg-white/20 transition-all">
-              <MessageCircle className="w-8 h-8 text-accent-lime mx-auto mb-4" />
+              <MessageCircle className="w-8 h-8 text-brand-green mx-auto mb-4" />
               <h3 className="text-white font-semibold text-lg mb-2">WhatsApp</h3>
               <a
                 href="https://wa.me/254702005560"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white/90 hover:text-accent-lime transition-colors"
+                className="text-white/90 hover:text-brand-green transition-colors"
               >
                 Chat with us instantly
               </a>

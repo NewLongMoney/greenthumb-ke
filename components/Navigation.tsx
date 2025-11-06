@@ -45,7 +45,7 @@ export default function Navigation() {
               <span className={`${isScrolled ? 'text-primary-700' : 'text-white'}`}>
                 GreenThumb
               </span>
-              <span className={`${isScrolled ? 'text-accent-lime' : 'text-accent-lime'}`}>
+              <span className={`${isScrolled ? 'text-brand-green' : 'text-brand-green'}`}>
                 {' '}KE
               </span>
             </div>
@@ -61,7 +61,7 @@ export default function Navigation() {
             >
               <button
                 className={`flex items-center space-x-1 font-medium ${
-                  isScrolled ? 'text-gray-700 hover:text-primary-600' : 'text-white hover:text-accent-lime'
+                  isScrolled ? 'text-gray-700 hover:text-brand-green' : 'text-white hover:text-brand-green'
                 }`}
               >
                 <span>Services</span>
@@ -80,7 +80,7 @@ export default function Navigation() {
                       <a
                         key={service.name}
                         href={service.href}
-                        className="block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-colors"
+                        className="block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-brand-green transition-colors"
                       >
                         {service.name}
                       </a>
@@ -120,7 +120,7 @@ export default function Navigation() {
               href="#contact"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-accent-lime text-white px-6 py-3 rounded-lg font-semibold shadow-lg hover:bg-primary-600 hover:shadow-xl"
+              className="bg-brand-green text-white px-6 py-3 rounded-lg font-semibold shadow-lg hover:bg-primary-600 hover:shadow-xl"
             >
               Get a Free Quote
             </motion.a>
@@ -154,7 +154,7 @@ export default function Navigation() {
                   <a
                     key={service.name}
                     href={service.href}
-                    className="block pl-4 py-2 text-gray-600 hover:text-primary-600"
+                    className="block pl-4 py-2 text-gray-600 hover:text-brand-green"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {service.name}
@@ -184,7 +184,7 @@ export default function Navigation() {
               </a>
               <a
                 href="#contact"
-                className="block w-full text-center bg-accent-lime text-white px-6 py-3 rounded-lg font-semibold"
+                className="block w-full text-center bg-brand-green text-white px-6 py-3 rounded-lg font-semibold"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Get a Free Quote

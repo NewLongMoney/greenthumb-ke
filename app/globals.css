@@ -28,12 +28,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #16a34a;
+  background: #80a536;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #15803d;
+  background: #557026;
 }
 
 /* Video container overlay */

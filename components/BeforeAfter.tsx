@@ -76,7 +76,7 @@ export default function BeforeAfter() {
             onTouchStart={() => setIsDragging(true)}
           >
             {/* After Image (Background) */}
-            <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-emerald-600">
+            <div className="absolute inset-0 bg-gradient-to-br from-brand-green to-primary-600">
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-white text-2xl font-bold bg-black/20 px-8 py-4 rounded-lg backdrop-blur-sm">
                   AFTER: Lush Green Paradise
@@ -103,8 +103,8 @@ export default function BeforeAfter() {
             >
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center">
                 <div className="flex space-x-1">
-                  <div className="w-1 h-6 bg-primary-600 rounded" />
-                  <div className="w-1 h-6 bg-primary-600 rounded" />
+                  <div className="w-1 h-6 bg-brand-green rounded" />
+                  <div className="w-1 h-6 bg-brand-green rounded" />
                 </div>
               </div>
             </div>
@@ -126,14 +126,14 @@ export default function BeforeAfter() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mt-12 bg-white rounded-2xl p-8 md:p-12 shadow-lg relative"
           >
-            <Quote className="w-12 h-12 text-primary-200 absolute top-8 left-8 opacity-50" />
+            <Quote className="w-12 h-12 text-brand-green/30 absolute top-8 left-8 opacity-50" />
             <div className="relative z-10">
               <p className="text-2xl md:text-3xl text-gray-800 font-medium leading-relaxed mb-6 italic">
                 "They didn't just fix our lawn; they gave us a backyard we can finally live in. 
                 The entire process was seamless, and the results exceeded our expectations."
               </p>
               <div className="flex items-center space-x-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                <div className="w-16 h-16 bg-gradient-to-br from-brand-green to-primary-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
                   MK
                 </div>
                 <div>

@@ -6,7 +6,7 @@ import { ArrowRight, Phone } from 'lucide-react'
 export default function Hero() {
   return (
     <section className="relative h-screen w-full overflow-hidden">
-      {/* Video Background - Using placeholder, you'll replace with actual video */}
+      {/* Video Background */}
       <div className="absolute inset-0 z-0">
         <video
           autoPlay
@@ -14,21 +14,24 @@ export default function Hero() {
           muted
           playsInline
           className="w-full h-full object-cover"
-          poster="/images/hero-poster.jpg"
+          poster="/pictures/Hero Poster Image.png"
         >
-          <source src="/videos/hero-video.mp4" type="video/mp4" />
+          <source src="/videos/Greenthumb Website Shot 1.mp4" type="video/mp4" />
+          <source src="/videos/Greenthumb Website Shot 2.mp4" type="video/mp4" />
+          <source src="/videos/Greenthumb Website Shot 3.mp4" type="video/mp4" />
+          <source src="/videos/Greenthumb Website Shot 4.mp4" type="video/mp4" />
         </video>
         {/* Video overlay for text readability */}
         <div className="absolute inset-0 video-overlay" />
       </div>
 
       {/* Alternative: Beautiful gradient background as fallback */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-br from-primary-900 via-primary-700 to-emerald-600">
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-primary-900 via-primary-700 to-primary-500">
         {/* Animated pattern overlay */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 -left-4 w-72 h-72 bg-white rounded-full mix-blend-overlay filter blur-3xl animate-blob" />
-          <div className="absolute top-0 -right-4 w-72 h-72 bg-accent-lime rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-2000" />
-          <div className="absolute -bottom-8 left-20 w-72 h-72 bg-emerald-300 rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-4000" />
+          <div className="absolute top-0 -right-4 w-72 h-72 bg-brand-green rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-2000" />
+          <div className="absolute -bottom-8 left-20 w-72 h-72 bg-primary-300 rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-4000" />
         </div>
       </div>
 
@@ -45,7 +48,7 @@ export default function Hero() {
             >
               Transforming Landscapes,
               <br />
-              <span className="text-accent-lime">Inspiring Lives.</span>
+              <span className="text-brand-green">Inspiring Lives.</span>
             </motion.h1>
 
             {/* Sub-headline */}
@@ -72,7 +75,7 @@ export default function Hero() {
                 href="#contact"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="group bg-accent-lime text-white px-8 py-4 rounded-lg font-semibold text-lg shadow-2xl hover:bg-primary-600 hover:shadow-accent-lime/50 flex items-center space-x-2 min-w-[280px] justify-center"
+                className="group bg-brand-green text-white px-8 py-4 rounded-lg font-semibold text-lg shadow-2xl hover:bg-primary-600 hover:shadow-brand-green/50 flex items-center space-x-2 min-w-[280px] justify-center"
               >
                 <span>Start Your Transformation</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -83,7 +86,7 @@ export default function Hero() {
                 href="#services"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group text-white font-semibold text-lg flex items-center space-x-2 hover:text-accent-lime"
+                className="group text-white font-semibold text-lg flex items-center space-x-2 hover:text-brand-green"
               >
                 <span>Explore Our Mission</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -99,7 +102,7 @@ export default function Hero() {
             >
               <a
                 href="tel:0702005560"
-                className="flex items-center space-x-2 hover:text-accent-lime"
+                className="flex items-center space-x-2 hover:text-brand-green"
               >
                 <Phone className="w-5 h-5" />
                 <span className="font-medium">0702 005 560</span>
@@ -107,7 +110,7 @@ export default function Hero() {
               <span className="hidden sm:block">|</span>
               <a
                 href="tel:0704096417"
-                className="flex items-center space-x-2 hover:text-accent-lime"
+                className="flex items-center space-x-2 hover:text-brand-green"
               >
                 <Phone className="w-5 h-5" />
                 <span className="font-medium">0704 096 417</span>

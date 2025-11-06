@@ -20,7 +20,7 @@ export default function Footer() {
             >
               <h3 className="text-2xl font-bold mb-2">
                 <span className="text-white">GreenThumb</span>
-                <span className="text-accent-lime"> KE</span>
+                <span className="text-brand-green"> KE</span>
               </h3>
               <p className="text-gray-400 text-lg mb-4">
                 Transforming landscapes, inspiring lives.
@@ -60,7 +60,7 @@ export default function Footer() {
                 <li key={link}>
                   <a
                     href={`#${link.toLowerCase().replace(' ', '-')}`}
-                    className="hover:text-accent-lime transition-colors"
+                    className="hover:text-brand-green transition-colors"
                   >
                     {link}
                   </a>
@@ -77,7 +77,7 @@ export default function Footer() {
                 <li key={service}>
                   <a
                     href={`#${service.toLowerCase().replace(' ', '-')}`}
-                    className="hover:text-accent-lime transition-colors"
+                    className="hover:text-brand-green transition-colors"
                   >
                     {service}
                   </a>
