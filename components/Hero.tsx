@@ -47,12 +47,11 @@ export default function Hero() {
           autoPlay
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
           className="w-full h-full object-cover transition-opacity duration-500"
           poster="/pictures/Hero Poster Image.png"
           aria-label="Hero background video showing lawn care and irrigation services in Kenya"
           onError={(e) => {
-            console.error('Video failed to load:', e)
             // Hide video element if it fails
             const video = e.currentTarget
             video.style.display = 'none'

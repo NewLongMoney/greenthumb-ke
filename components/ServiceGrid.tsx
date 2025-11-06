@@ -93,18 +93,21 @@ export default function ServiceGrid() {
                   style={{ background: 'linear-gradient(135deg, #80a536 0%, #557026 100%)' }}
                 />
               ) : (
-                <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-110 overflow-hidden">
-                  <Image
-                    src={service.image}
-                    alt={service.title}
-                    fill
-                    className="object-cover"
-                    onError={() => {
-                      setImageErrors(prev => new Set(prev).add(service.id))
-                    }}
-                    unoptimized={service.image.startsWith('/')}
-                  />
-                </div>
+              <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-110 overflow-hidden">
+                <Image
+                  src={service.image}
+                  alt={service.title}
+                  fill
+                  className="object-cover"
+                  loading="lazy"
+                  quality={85}
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  onError={() => {
+                    setImageErrors(prev => new Set(prev).add(service.id))
+                  }}
+                  unoptimized={service.image.startsWith('/')}
+                />
+              </div>
               )}
 
               {/* Overlay */}

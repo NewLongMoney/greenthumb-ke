@@ -85,10 +85,11 @@ export default function Logo({
         width={width || defaultWidth}
         height={height || defaultHeight}
         className={variant === 'icon' ? 'object-cover w-full h-full' : 'object-contain'}
-        priority
+        priority={variant === 'icon'}
         onError={handleError}
-        loading="eager"
-        quality={90}
+        loading={variant === 'icon' ? 'eager' : 'lazy'}
+        quality={85}
+        sizes={variant === 'icon' ? '60px' : '200px'}
         style={variant === 'icon' ? {
           width: '100%',
           height: '100%',

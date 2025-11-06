@@ -1,0 +1,4 @@
+# This file ensures the public directory is tracked by git
+# All files in this directory are publicly accessible
+# DO NOT place sensitive files here (API keys, secrets, etc.)
+

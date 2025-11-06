@@ -94,6 +94,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        {/* Preconnect to external domains for faster loading */}
+        <link rel="preconnect" href="https://www.tiktok.com" />
+        <link rel="preconnect" href="https://www.facebook.com" />
+        <link rel="preconnect" href="https://www.instagram.com" />
+        {/* DNS prefetch for faster external resource loading */}
+        <link rel="dns-prefetch" href="https://www.tiktok.com" />
+        <link rel="dns-prefetch" href="https://www.facebook.com" />
+        <link rel="dns-prefetch" href="https://www.instagram.com" />
+      </head>
       <body className={`${montserrat.variable} font-sans antialiased`}>
         <StructuredData />
         {children}
