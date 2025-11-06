@@ -42,7 +42,7 @@ export default function Hero() {
       forcePlay(video1)
       forcePlay(video2)
     }
-
+    
     // Check every 100ms to ensure videos never pause
     const monitorInterval = setInterval(monitorVideos, 100)
     
@@ -80,7 +80,7 @@ export default function Hero() {
 
     const handleCanPlay = () => {
       playVideo()
-    }
+        }
 
     const handlePause = () => {
       // Immediately resume if paused
@@ -201,7 +201,7 @@ export default function Hero() {
         setTimeout(() => {
           if (isMounted && nextVideo) {
             nextVideo.play().catch(() => {})
-          }
+      }
         }, 100)
       }
 
@@ -269,10 +269,10 @@ export default function Hero() {
         if (!video) return
         if (video.paused) {
           try {
-            video.muted = true
-            video.volume = 0
-            await video.play()
-          } catch (error) {
+          video.muted = true
+          video.volume = 0
+          await video.play()
+        } catch (error) {
             // Retry
             setTimeout(() => playVideo(video), 100)
           }
@@ -296,36 +296,36 @@ export default function Hero() {
   }, [])
 
   return (
-    <section className="relative h-screen w-full overflow-hidden pt-24 md:pt-20">
+    <section className="relative h-screen w-full overflow-hidden">
       {/* Video Background - Dual videos for seamless transitions */}
-      <div className="absolute inset-0 z-[1]">
+        <div className="absolute inset-0 z-[1]">
         {/* Primary Video */}
-        <video
+          <video
           ref={video1Ref}
-          autoPlay
-          muted
-          playsInline
-          preload="auto"
-          loop={false}
-          controls={false}
-          disablePictureInPicture
-          disableRemotePlayback
+            autoPlay
+            muted
+            playsInline
+            preload="auto"
+            loop={false}
+            controls={false}
+            disablePictureInPicture
+            disableRemotePlayback
           className={`w-full h-full object-cover absolute inset-0 transition-opacity duration-300 ${
             activeVideo === 'video1' ? 'opacity-100 z-10' : 'opacity-0 z-0'
           }`}
-          aria-label="Hero background video"
-          style={{ pointerEvents: 'none' }}
+            aria-label="Hero background video"
+            style={{ pointerEvents: 'none' }}
           fetchPriority="high"
           onPause={(e) => {
             // Immediately resume if paused
-            const video = e.currentTarget
+              const video = e.currentTarget
             video.play().catch(() => {
               setTimeout(() => video.play(), 100)
             })
           }}
           onWaiting={(e) => {
             // Resume when buffering completes
-            const video = e.currentTarget
+              const video = e.currentTarget
             const resumeOnCanPlay = () => {
               video.play().catch(() => {})
               video.removeEventListener('canplay', resumeOnCanPlay)
@@ -365,11 +365,11 @@ export default function Hero() {
               video.removeEventListener('canplay', resumeOnCanPlay)
             }
             video.addEventListener('canplay', resumeOnCanPlay, { once: true })
-          }}
-        />
+            }}
+          />
         
         <div className="absolute inset-0 video-overlay z-20" />
-      </div>
+        </div>
 
       {/* Fallback gradient */}
       <div className="absolute inset-0 z-0 bg-gradient-to-br from-primary-900 via-primary-700 to-primary-500">
