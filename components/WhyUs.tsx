@@ -16,7 +16,7 @@ export default function WhyUs() {
       icon: <Lightbulb className="w-12 h-12" />,
       title: 'Whole-System Experts',
       description:
-        'We master the science of both traditional landscapes and innovative hydroponic systems. Our expertise spans the full spectrum of green solutions.',
+        'We master the science of lawn care, irrigation systems, garden maintenance, and innovative hydroponic solutions. Our expertise spans the full spectrum of outdoor services.',
       color: 'from-brand-green to-primary-500',
     },
     {
@@ -43,7 +43,7 @@ export default function WhyUs() {
             Why Choose GreenThumb KE?
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            We&apos;re not just landscapers—we&apos;re environmental stewards, innovators, and partners in your vision.
+            Kenya&apos;s leading irrigation and lawn care experts. We&apos;re environmental stewards, innovators, and partners in your vision for beautiful, sustainable outdoor spaces.
           </p>
         </motion.div>
 

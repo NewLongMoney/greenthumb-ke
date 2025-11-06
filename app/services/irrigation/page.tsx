@@ -3,8 +3,22 @@ import Link from 'next/link'
 import { ArrowLeft, Check, Phone, Mail, Droplet, Gauge, Smartphone, Leaf } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Smart Irrigation Systems Installation in Kenya - GreenThumb KE',
-  description: 'Professional irrigation system design and installation. Save up to 50% water with smart controllers and efficient drip systems.',
+  title: 'Best Irrigation Systems Company in Kenya | Smart Irrigation Installation - GreenThumb KE',
+  description: 'Best irrigation systems company in Kenya and East Africa. Professional smart irrigation installation, drip irrigation systems, automated sprinklers, and water-efficient irrigation solutions in Nairobi. Top-rated irrigation experts serving Kenya.',
+  keywords: [
+    'best irrigation company Kenya',
+    'irrigation systems Kenya',
+    'smart irrigation installation Nairobi',
+    'drip irrigation Kenya',
+    'automated irrigation systems Kenya',
+    'irrigation company East Africa',
+    'best irrigation company Nairobi',
+    'irrigation experts Kenya',
+    'garden irrigation Kenya',
+    'irrigation contractors Kenya',
+    'water efficient irrigation Kenya',
+    'irrigation system design Kenya'
+  ],
 }
 
 export default function IrrigationPage() {

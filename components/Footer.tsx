@@ -21,11 +21,11 @@ export default function Footer() {
             >
               <Logo variant="full" light={false} width={200} height={60} className="mb-4" />
               <p className="text-gray-400 text-lg mb-4">
-                Transforming landscapes, inspiring lives.
+                Best Irrigation & Lawn Care Company in Kenya
               </p>
               <p className="text-gray-400 leading-relaxed">
-                We specialize in lawn care, irrigation systems, garden services, and innovative hydroponics solutions. 
-                Building sustainable, beautiful spaces across Kenya.
+                Kenya&apos;s leading provider of professional lawn care services, smart irrigation systems, garden maintenance, and hydroponic solutions. 
+                Serving Nairobi, Kenya, and East Africa with excellence.
               </p>
             </motion.div>
 

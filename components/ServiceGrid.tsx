@@ -67,7 +67,7 @@ export default function ServiceGrid() {
             Our Services
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Comprehensive landscape solutions designed to transform your space
+            Professional lawn care, irrigation systems, garden services, and hydroponic solutions across Kenya and East Africa
           </p>
         </motion.div>
       </div>

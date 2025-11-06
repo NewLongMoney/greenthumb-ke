@@ -3,8 +3,18 @@ import Link from 'next/link'
 import { ArrowLeft, Check, Phone, Mail, Sprout, DollarSign, TrendingUp, Users } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Hydroponics Systems & Installation in Kenya - GreenThumb KE',
-  description: 'Professional hydroponic farming systems for homes and businesses. Grow fresh vegetables year-round with 90% less water. Complete setup and training.',
+  title: 'Hydroponic Systems Installation in Kenya | Hydroponics Company - GreenThumb KE',
+  description: 'Professional hydroponic systems installation in Kenya and East Africa. Hydroponic farming systems for homes and businesses in Nairobi. Grow fresh vegetables year-round with 90% less water.',
+  keywords: [
+    'hydroponic systems Kenya',
+    'hydroponics company Kenya',
+    'hydroponic installation Nairobi',
+    'hydroponic farming Kenya',
+    'soilless farming Kenya',
+    'hydroponics East Africa',
+    'hydroponic systems Nairobi',
+    'hydroponic experts Kenya'
+  ],
 }
 
 export default function HydroponicsPage() {

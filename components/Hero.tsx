@@ -50,7 +50,7 @@ export default function Hero() {
           preload="auto"
           className="w-full h-full object-cover transition-opacity duration-500"
           poster="/pictures/Hero Poster Image.png"
-          aria-label="Hero background video showing landscape services"
+          aria-label="Hero background video showing lawn care and irrigation services in Kenya"
           onError={(e) => {
             console.error('Video failed to load:', e)
             // Hide video element if it fails
@@ -85,9 +85,9 @@ export default function Hero() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight"
             >
-              Transforming Landscapes,
+              Best Irrigation & Lawn Care
               <br />
-              <span className="text-brand-green">Inspiring Lives.</span>
+              <span className="text-brand-green">Company in Kenya</span>
             </motion.h1>
 
             {/* Sub-headline */}
@@ -97,9 +97,8 @@ export default function Hero() {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="text-xl md:text-2xl text-white/90 mb-12 leading-relaxed max-w-3xl mx-auto"
             >
-              We design, sustain, and cultivate spaces for health and growth.
-              <br />
-              From soil to soilless.
+              Professional lawn care services, smart irrigation systems, and garden maintenance 
+              across Kenya and East Africa. Trusted by hundreds of homeowners and businesses in Nairobi.
             </motion.p>
 
             {/* CTA Buttons */}

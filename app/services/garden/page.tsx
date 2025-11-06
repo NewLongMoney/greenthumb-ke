@@ -3,8 +3,18 @@ import Link from 'next/link'
 import { ArrowLeft, Check, Phone, Mail, Flower2, TreeDeciduous, Palette, Wrench } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Professional Garden Design & Maintenance Services - GreenThumb KE',
-  description: 'Expert garden design, landscaping, and maintenance services in Kenya. Create your dream outdoor space with sustainable, beautiful gardens.',
+  title: 'Garden Services in Kenya | Garden Design & Maintenance - GreenThumb KE',
+  description: 'Professional garden services in Kenya and East Africa. Expert garden design, garden maintenance, and garden care services in Nairobi. Trusted garden services company serving Kenya.',
+  keywords: [
+    'garden services Kenya',
+    'garden design Kenya',
+    'garden maintenance Kenya',
+    'garden care Nairobi',
+    'garden services East Africa',
+    'professional garden services Kenya',
+    'garden landscaping Kenya',
+    'garden installation Kenya'
+  ],
 }
 
 export default function GardenPage() {

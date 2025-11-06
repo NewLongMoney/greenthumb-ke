@@ -3,8 +3,22 @@ import Link from 'next/link'
 import { ArrowLeft, Check, Phone, Mail } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Professional Lawn Care Services in Kenya - GreenThumb KE',
-  description: 'Expert lawn maintenance, mowing, fertilization, and weed control services in Kenya. Transform your lawn into a lush, healthy paradise.',
+  title: 'Best Lawn Care Company in Kenya | Professional Lawn Care Services - GreenThumb KE',
+  description: 'Best lawn care company in Kenya and East Africa. Professional lawn maintenance, mowing, fertilization, weed control, and lawn care services in Nairobi. Top-rated lawn care experts serving Kenya.',
+  keywords: [
+    'best lawn care company Kenya',
+    'lawn care services Kenya',
+    'professional lawn care Nairobi',
+    'lawn maintenance Kenya',
+    'lawn mowing services Kenya',
+    'lawn care East Africa',
+    'best lawn care company Nairobi',
+    'lawn care experts Kenya',
+    'lawn fertilization Kenya',
+    'weed control Kenya',
+    'lawn treatment Kenya',
+    'lawn care contractors Kenya'
+  ],
 }
 
 export default function LawnCarePage() {
