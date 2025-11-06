@@ -1,20 +1,54 @@
 'use client'
 
+import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Phone } from 'lucide-react'
 
 export default function Hero() {
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  const videos = [
+    '/videos/Greenthumb Website Shot 1.mp4',
+    '/videos/Greenthumb Website Shot 2.mp4',
+    '/videos/Greenthumb Website Shot 3.mp4',
+    '/videos/Greenthumb Website Shot 4.mp4',
+  ]
+
+  useEffect(() => {
+    const videoElement = videoRef.current
+    if (!videoElement) return
+
+    const handleVideoEnd = () => {
+      // Move to next video after 7 seconds or when video ends
+      setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length)
+    }
+
+    // Auto-switch video every 7 seconds
+    const timer = setTimeout(() => {
+      setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length)
+    }, 7000) // 7 seconds per video
+
+    videoElement.addEventListener('ended', handleVideoEnd)
+
+    return () => {
+      clearTimeout(timer)
+      videoElement.removeEventListener('ended', handleVideoEnd)
+    }
+  }, [currentVideoIndex, videos.length])
+
   return (
     <section className="relative h-screen w-full overflow-hidden">
       {/* Video Background */}
       <div className="absolute inset-0 z-[1]">
         <video
+          ref={videoRef}
+          key={currentVideoIndex}
           autoPlay
-          loop
           muted
           playsInline
           preload="auto"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover transition-opacity duration-500"
           poster="/pictures/Hero Poster Image.png"
           aria-label="Hero background video showing landscape services"
           onError={(e) => {
@@ -24,10 +58,7 @@ export default function Hero() {
             video.style.display = 'none'
           }}
         >
-          <source src="/videos/Greenthumb Website Shot 1.mp4" type="video/mp4" />
-          <source src="/videos/Greenthumb Website Shot 2.mp4" type="video/mp4" />
-          <source src="/videos/Greenthumb Website Shot 3.mp4" type="video/mp4" />
-          <source src="/videos/Greenthumb Website Shot 4.mp4" type="video/mp4" />
+          <source src={videos[currentVideoIndex]} type="video/mp4" />
         </video>
         {/* Video overlay for text readability */}
         <div className="absolute inset-0 video-overlay" />

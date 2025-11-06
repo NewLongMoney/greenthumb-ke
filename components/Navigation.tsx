@@ -41,13 +41,11 @@ export default function Navigation() {
           <motion.a
             href="/"
             whileHover={{ scale: 1.05 }}
-            className="flex items-center space-x-3"
+            className="flex items-center"
           >
-            {isScrolled ? (
-              <Logo variant="full" light={false} width={200} height={60} />
-            ) : (
-              <Logo variant="full" light={true} width={200} height={60} />
-            )}
+            <div className={`rounded-full p-2 ${isScrolled ? 'bg-white shadow-md' : 'bg-white/90 backdrop-blur-sm'}`}>
+              <Logo variant="icon" light={false} width={50} height={50} />
+            </div>
           </motion.a>
 
           {/* Desktop Navigation */}

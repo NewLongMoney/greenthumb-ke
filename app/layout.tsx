@@ -17,8 +17,11 @@ export const metadata: Metadata = {
   description: 'Professional lawn care, irrigation systems, garden services, and hydroponics in Kenya. Sustainable landscape solutions for your home or business.',
   keywords: ['lawn care Kenya', 'irrigation systems', 'hydroponics', 'garden services', 'landscape design'],
   icons: {
-    icon: '/logos/favicon.ico',
-    shortcut: '/logos/favicon.ico',
+    icon: [
+      { url: '/logos/Green Thumb Logo.png', sizes: '32x32', type: 'image/png' },
+      { url: '/logos/Green Thumb Logo.png', sizes: '16x16', type: 'image/png' },
+    ],
+    shortcut: '/logos/Green Thumb Logo.png',
     apple: '/logos/Green Thumb Logo.png',
   },
   openGraph: {
