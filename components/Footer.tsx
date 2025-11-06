@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Facebook, Instagram, Twitter, Linkedin, Mail, Phone, MapPin } from 'lucide-react'
+import { Facebook, Instagram, Mail, Phone, MapPin, Music } from 'lucide-react'
 import Logo from './Logo'
 
 export default function Footer() {
@@ -124,17 +124,18 @@ export default function Footer() {
             {/* Social Media */}
             <div className="flex space-x-6">
               {[
-                { icon: Facebook, href: '#', label: 'Facebook' },
-                { icon: Instagram, href: '#', label: 'Instagram' },
-                { icon: Twitter, href: '#', label: 'Twitter' },
-                { icon: Linkedin, href: '#', label: 'LinkedIn' },
+                { icon: Facebook, href: 'https://www.facebook.com/share/1BiBATzodF/?mibextid=wwXIfr', label: 'Facebook' },
+                { icon: Instagram, href: 'https://www.instagram.com/greenthumb_254?igsh=NHl5OHRhZm1iZWwx', label: 'Instagram' },
+                { icon: Music, href: 'https://www.tiktok.com/@greenthumbkenya?_r=1&_t=ZM-91AQoayz14u', label: 'TikTok' },
               ].map(({ icon: Icon, href, label }) => (
                 <motion.a
                   key={label}
                   href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   whileHover={{ scale: 1.2, y: -2 }}
                   whileTap={{ scale: 0.9 }}
-                  className="text-gray-400 hover:text-accent-lime transition-colors"
+                  className="text-gray-400 hover:text-brand-green transition-colors"
                   aria-label={label}
                 >
                   <Icon className="w-6 h-6" />

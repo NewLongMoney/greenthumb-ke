@@ -23,7 +23,7 @@ export default function ServiceGrid() {
       id: 'lawn-care',
       title: 'Lawn Care Services',
       icon: <Scissors className="w-12 h-12" />,
-      image: 'linear-gradient(135deg, #80a536 0%, #557026 100%)', // Gradient until images are added
+      image: '/pictures/Lawn Care Services.png',
       pitch: 'Perfection in Every Blade',
       description: 'Professional lawn maintenance that transforms your outdoor space into a pristine, healthy green oasis.',
     },
@@ -31,7 +31,7 @@ export default function ServiceGrid() {
       id: 'irrigation',
       title: 'Irrigation Systems',
       icon: <Droplets className="w-12 h-12" />,
-      image: 'linear-gradient(135deg, #80a536 0%, #557026 100%)', // Gradient until images are added
+      image: '/pictures/Irrigation Systems.png',
       pitch: 'Smart Water, Smarter Gardens',
       description: 'Advanced irrigation solutions that save water, reduce costs, and keep your landscape thriving year-round.',
     },
@@ -39,7 +39,7 @@ export default function ServiceGrid() {
       id: 'garden',
       title: 'Garden Services',
       icon: <Sprout className="w-12 h-12" />,
-      image: 'linear-gradient(135deg, #80a536 0%, #557026 100%)', // Gradient until images are added
+      image: '/pictures/Gardening Services.png',
       pitch: 'Where Beauty Meets Nature',
       description: 'Complete garden design and maintenance services that create stunning outdoor spaces tailored to your vision.',
     },
@@ -47,7 +47,7 @@ export default function ServiceGrid() {
       id: 'hydroponics',
       title: 'Hydroponics',
       icon: <Leaf className="w-12 h-12" />,
-      image: 'linear-gradient(135deg, #80a536 0%, #557026 100%)', // Gradient until images are added
+      image: '/pictures/Hydroponics Services.png',
       pitch: 'Future Growth',
       description: 'Revolutionary soilless food production systems for your home or business—sustainable, efficient, and innovative.',
     },

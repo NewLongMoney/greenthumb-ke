@@ -21,21 +21,17 @@ export default function Logo({
   const [imgSrc, setImgSrc] = useState<string>('')
   const [imgError, setImgError] = useState(false)
 
-  // Determine logo file paths - using actual user files
+  // Determine logo file paths - using round logo
   useEffect(() => {
     if (variant === 'icon') {
-      // For icon, use the main logo (smaller size)
-      if (light) {
-        setImgSrc('/logos/Green Thumb Logo with BG white.png')
-      } else {
-        setImgSrc('/logos/Green Thumb Logo.png')
-      }
+      // Always use round logo for icon
+      setImgSrc('/logos/Green Thumb Logo Round.png')
     } else {
       // Full logo
       if (light) {
         setImgSrc('/logos/Green Thumb Logo with BG white.png')
       } else {
-        // Use dark version for normal, or main logo
+        // Use dark version for normal
         setImgSrc('/logos/Green Thumb Logo dARK (1).png')
       }
     }
