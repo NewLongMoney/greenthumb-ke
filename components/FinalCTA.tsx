@@ -28,7 +28,7 @@ export default function FinalCTA() {
 
           {/* Subtext */}
           <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-3xl mx-auto leading-relaxed">
-            Let's discuss your vision. Get a no-obligation consultation from our experts today.
+            Let&apos;s discuss your vision. Get a no-obligation consultation from our experts today.
           </p>
 
           {/* CTA Buttons */}

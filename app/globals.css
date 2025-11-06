@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Performance optimizations */
+img, video {
+  content-visibility: auto;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;

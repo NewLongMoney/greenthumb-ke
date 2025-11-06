@@ -13,13 +13,12 @@ export default function Hero() {
           loop
           muted
           playsInline
+          preload="metadata"
           className="w-full h-full object-cover"
           poster="/pictures/Hero Poster Image.png"
+          aria-label="Hero background video showing landscape services"
         >
           <source src="/videos/Greenthumb Website Shot 1.mp4" type="video/mp4" />
-          <source src="/videos/Greenthumb Website Shot 2.mp4" type="video/mp4" />
-          <source src="/videos/Greenthumb Website Shot 3.mp4" type="video/mp4" />
-          <source src="/videos/Greenthumb Website Shot 4.mp4" type="video/mp4" />
         </video>
         {/* Video overlay for text readability */}
         <div className="absolute inset-0 video-overlay" />

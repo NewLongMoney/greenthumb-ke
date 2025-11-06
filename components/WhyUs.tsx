@@ -23,7 +23,7 @@ export default function WhyUs() {
       icon: <Users className="w-12 h-12" />,
       title: 'People-First Design',
       description:
-        'Your space is designed to inspire you, whether it\'s for play, food, or peace of mind. We create environments that enhance your quality of life.',
+        'Your space is designed to inspire you, whether it&apos;s for play, food, or peace of mind. We create environments that enhance your quality of life.',
       color: 'from-primary-600 to-brand-green',
     },
   ]
@@ -43,7 +43,7 @@ export default function WhyUs() {
             Why Choose GreenThumb KE?
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            We're not just landscapers—we're environmental stewards, innovators, and partners in your vision.
+            We&apos;re not just landscapers—we&apos;re environmental stewards, innovators, and partners in your vision.
           </p>
         </motion.div>
 

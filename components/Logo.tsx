@@ -21,20 +21,22 @@ export default function Logo({
   const [imgSrc, setImgSrc] = useState<string>('')
   const [imgError, setImgError] = useState(false)
 
-  // Determine logo file paths (try multiple formats)
+  // Determine logo file paths - using actual user files
   useEffect(() => {
     if (variant === 'icon') {
+      // For icon, use the main logo (smaller size)
       if (light) {
-        setImgSrc('/logos/logo-icon-light.svg')
+        setImgSrc('/logos/Green Thumb Logo with BG white.png')
       } else {
-        setImgSrc('/logos/logo-icon.svg')
+        setImgSrc('/logos/Green Thumb Logo.png')
       }
     } else {
       // Full logo
       if (light) {
-        setImgSrc('/logos/logo-full-light.svg')
+        setImgSrc('/logos/Green Thumb Logo with BG white.png')
       } else {
-        setImgSrc('/logos/logo-full.svg')
+        // Use dark version for normal, or main logo
+        setImgSrc('/logos/Green Thumb Logo dARK (1).png')
       }
     }
   }, [variant, light])
@@ -89,6 +91,8 @@ export default function Logo({
         className="object-contain"
         priority
         onError={handleError}
+        loading="eager"
+        quality={90}
         style={{
           maxWidth: '100%',
           height: 'auto',

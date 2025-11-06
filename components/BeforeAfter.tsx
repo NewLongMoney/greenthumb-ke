@@ -9,36 +9,39 @@ export default function BeforeAfter() {
   const [isDragging, setIsDragging] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const handleMove = (clientX: number) => {
-    if (!containerRef.current) return
-
-    const rect = containerRef.current.getBoundingClientRect()
-    const x = clientX - rect.left
-    const percentage = (x / rect.width) * 100
-    setSliderPosition(Math.max(0, Math.min(100, percentage)))
-  }
-
-  const handleMouseMove = (e: MouseEvent) => {
-    if (isDragging) handleMove(e.clientX)
-  }
-
-  const handleTouchMove = (e: TouchEvent) => {
-    if (isDragging && e.touches[0]) handleMove(e.touches[0].clientX)
-  }
-
   useEffect(() => {
+    const handleMove = (clientX: number) => {
+      if (!containerRef.current) return
+
+      const rect = containerRef.current.getBoundingClientRect()
+      const x = clientX - rect.left
+      const percentage = (x / rect.width) * 100
+      setSliderPosition(Math.max(0, Math.min(100, percentage)))
+    }
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isDragging) handleMove(e.clientX)
+    }
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (isDragging && e.touches[0]) handleMove(e.touches[0].clientX)
+    }
+
+    const handleMouseUp = () => setIsDragging(false)
+    const handleTouchEnd = () => setIsDragging(false)
+
     if (isDragging) {
       document.addEventListener('mousemove', handleMouseMove)
-      document.addEventListener('mouseup', () => setIsDragging(false))
+      document.addEventListener('mouseup', handleMouseUp)
       document.addEventListener('touchmove', handleTouchMove)
-      document.addEventListener('touchend', () => setIsDragging(false))
+      document.addEventListener('touchend', handleTouchEnd)
     }
 
     return () => {
       document.removeEventListener('mousemove', handleMouseMove)
-      document.removeEventListener('mouseup', () => setIsDragging(false))
+      document.removeEventListener('mouseup', handleMouseUp)
       document.removeEventListener('touchmove', handleTouchMove)
-      document.removeEventListener('touchend', () => setIsDragging(false))
+      document.removeEventListener('touchend', handleTouchEnd)
     }
   }, [isDragging])
 
@@ -129,8 +132,8 @@ export default function BeforeAfter() {
             <Quote className="w-12 h-12 text-brand-green/30 absolute top-8 left-8 opacity-50" />
             <div className="relative z-10">
               <p className="text-2xl md:text-3xl text-gray-800 font-medium leading-relaxed mb-6 italic">
-                "They didn't just fix our lawn; they gave us a backyard we can finally live in. 
-                The entire process was seamless, and the results exceeded our expectations."
+                &ldquo;They didn&apos;t just fix our lawn; they gave us a backyard we can finally live in. 
+                The entire process was seamless, and the results exceeded our expectations.&rdquo;
               </p>
               <div className="flex items-center space-x-4">
                 <div className="w-16 h-16 bg-gradient-to-br from-brand-green to-primary-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
@@ -171,7 +174,7 @@ export default function BeforeAfter() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow"
               >
-                <p className="text-gray-700 mb-4 italic">"{testimonial.text}"</p>
+                <p className="text-gray-700 mb-4 italic">&ldquo;{testimonial.text}&rdquo;</p>
                 <p className="font-semibold text-gray-900">{testimonial.name}</p>
                 <p className="text-sm text-gray-600">{testimonial.location}</p>
               </motion.div>
