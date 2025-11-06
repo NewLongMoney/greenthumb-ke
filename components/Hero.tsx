@@ -19,6 +19,27 @@ export default function Hero() {
     const videoElement = videoRef.current
     if (!videoElement) return
 
+    // Force video to load and play on mobile
+    const ensureVideoPlays = () => {
+      if (videoElement.readyState >= 2) {
+        // Video has enough data to play
+        videoElement.play().catch(() => {
+          // Autoplay was prevented, but video is loaded
+        })
+      }
+    }
+
+    // Try to play immediately
+    ensureVideoPlays()
+
+    // Also try when video can play
+    videoElement.addEventListener('canplay', ensureVideoPlays, { once: true })
+    videoElement.addEventListener('loadeddata', ensureVideoPlays, { once: true })
+    videoElement.addEventListener('loadedmetadata', ensureVideoPlays, { once: true })
+
+    // Load the video source
+    videoElement.load()
+
     const handleVideoEnd = () => {
       // Move to next video after 7 seconds or when video ends
       setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length)
@@ -34,6 +55,9 @@ export default function Hero() {
     return () => {
       clearTimeout(timer)
       videoElement.removeEventListener('ended', handleVideoEnd)
+      videoElement.removeEventListener('canplay', ensureVideoPlays)
+      videoElement.removeEventListener('loadeddata', ensureVideoPlays)
+      videoElement.removeEventListener('loadedmetadata', ensureVideoPlays)
     }
   }, [currentVideoIndex, videos.length])
 
@@ -47,10 +71,18 @@ export default function Hero() {
           autoPlay
           muted
           playsInline
-          preload="metadata"
+          loop
+          preload="auto"
           className="w-full h-full object-cover transition-opacity duration-500"
           poster="/pictures/Hero Poster Image.png"
           aria-label="Hero background video showing lawn care and irrigation services in Kenya"
+          onLoadedData={(e) => {
+            // Ensure video plays on mobile
+            const video = e.currentTarget
+            video.play().catch(() => {
+              // Autoplay blocked, but video is loaded
+            })
+          }}
           onError={(e) => {
             // Hide video element if it fails
             const video = e.currentTarget
