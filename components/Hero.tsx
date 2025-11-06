@@ -6,7 +6,10 @@ import { ArrowRight, Phone } from 'lucide-react'
 
 export default function Hero() {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0)
-  const videoRef = useRef<HTMLVideoElement>(null)
+  const [nextVideoIndex, setNextVideoIndex] = useState(1)
+  const [activeVideo, setActiveVideo] = useState<'video1' | 'video2'>('video1')
+  const video1Ref = useRef<HTMLVideoElement>(null)
+  const video2Ref = useRef<HTMLVideoElement>(null)
   const switchTimerRef = useRef<NodeJS.Timeout | null>(null)
 
   const videos = [
@@ -16,105 +19,155 @@ export default function Hero() {
     '/videos/Greenthumb Website Shot 4.mp4',
   ]
 
-  // Video playback for all devices
+  // Initialize first video
   useEffect(() => {
-    const videoElement = videoRef.current
-    if (!videoElement) return
+    const currentVideo = video1Ref.current
+    if (!currentVideo) return
 
-    // Set attributes for mobile compatibility
-    videoElement.setAttribute('playsinline', 'true')
-    videoElement.setAttribute('webkit-playsinline', 'true')
-    videoElement.muted = true
-    videoElement.volume = 0
-    videoElement.playsInline = true
-    videoElement.controls = false
+    currentVideo.muted = true
+    currentVideo.volume = 0
+    currentVideo.playsInline = true
+    currentVideo.setAttribute('playsinline', 'true')
+    currentVideo.setAttribute('webkit-playsinline', 'true')
+    currentVideo.preload = 'auto'
+    currentVideo.src = videos[0]
+    currentVideo.load()
 
-    let isMounted = true
-
-    // Play video function
     const playVideo = async () => {
-      if (!videoElement || !isMounted) return
       try {
-        videoElement.muted = true
-        videoElement.volume = 0
-        if (videoElement.paused) {
-          await videoElement.play()
+        if (currentVideo.paused) {
+          await currentVideo.play()
         }
       } catch (error) {
-        // Autoplay blocked - will try again on user interaction
+        // Autoplay blocked
       }
     }
 
-    // Handle video end
-    const handleVideoEnd = () => {
-      if (isMounted) {
-        if (switchTimerRef.current) {
-          clearTimeout(switchTimerRef.current)
-        }
-        setCurrentVideoIndex((prev) => (prev + 1) % videos.length)
-      }
-    }
-
-    // Handle video ready
     const handleCanPlay = () => {
-      if (isMounted && videoElement && videoElement.paused) {
-        playVideo()
+      playVideo()
+    }
+
+    currentVideo.addEventListener('canplay', handleCanPlay, { once: true })
+    currentVideo.addEventListener('loadeddata', handleCanPlay, { once: true })
+    
+    if (currentVideo.readyState >= 2) {
+      playVideo()
+    }
+
+    return () => {
+      currentVideo.removeEventListener('canplay', handleCanPlay)
+      currentVideo.removeEventListener('loadeddata', handleCanPlay)
+    }
+  }, [])
+
+  // Handle seamless video transitions
+  useEffect(() => {
+    const currentVideo = activeVideo === 'video1' ? video1Ref.current : video2Ref.current
+    const nextVideo = activeVideo === 'video1' ? video2Ref.current : video1Ref.current
+    if (!currentVideo || !nextVideo) return
+
+    let isMounted = true
+    let hasSwitched = false
+
+    // Preload next video
+    const nextIndex = (currentVideoIndex + 1) % videos.length
+    nextVideo.muted = true
+    nextVideo.volume = 0
+    nextVideo.playsInline = true
+    nextVideo.setAttribute('playsinline', 'true')
+    nextVideo.setAttribute('webkit-playsinline', 'true')
+    nextVideo.preload = 'auto'
+    nextVideo.src = videos[nextIndex]
+    nextVideo.load()
+
+    const switchToNextVideo = async () => {
+      if (!isMounted || hasSwitched) return
+      hasSwitched = true
+
+      // Prepare next video
+      nextVideo.currentTime = 0
+      
+      // Wait for next video to be ready
+      const waitForReady = () => {
+        return new Promise<void>((resolve) => {
+          if (nextVideo.readyState >= 3) {
+            resolve()
+          } else {
+            const onCanPlay = () => {
+              nextVideo.removeEventListener('canplay', onCanPlay)
+              resolve()
+            }
+            nextVideo.addEventListener('canplay', onCanPlay, { once: true })
+          }
+        })
+      }
+
+      await waitForReady()
+
+      // Play next video
+      try {
+        await nextVideo.play()
+      } catch (error) {
+        // Ignore
+      }
+
+      // Switch active video
+      setActiveVideo(prev => prev === 'video1' ? 'video2' : 'video1')
+      setCurrentVideoIndex(nextIndex)
+    }
+
+    // Monitor current video time and switch before it ends
+    const checkTime = () => {
+      if (!isMounted || !currentVideo || hasSwitched) return
+      
+      const duration = currentVideo.duration
+      const currentTime = currentVideo.currentTime
+      
+      // Switch 0.3 seconds before the video ends for seamless transition
+      if (duration > 0 && currentTime > 0 && (duration - currentTime) <= 0.3) {
+        switchToNextVideo()
+      }
+    }
+
+    const handleTimeUpdate = () => {
+      checkTime()
+    }
+
+    const handleVideoEnd = () => {
+      if (isMounted && !hasSwitched) {
+        switchToNextVideo()
       }
     }
 
     // Add event listeners
-    videoElement.addEventListener('canplay', handleCanPlay)
-    videoElement.addEventListener('canplaythrough', handleCanPlay)
-    videoElement.addEventListener('loadeddata', handleCanPlay)
-    videoElement.addEventListener('ended', handleVideoEnd)
+    currentVideo.addEventListener('timeupdate', handleTimeUpdate)
+    currentVideo.addEventListener('ended', handleVideoEnd)
 
-    // Load and try to play
-    videoElement.load()
-    
-    if (videoElement.readyState >= 2) {
-      playVideo()
-    }
-
-    // Retry playing if paused
-    const playInterval = setInterval(() => {
-      if (isMounted && videoElement && videoElement.paused && !videoElement.ended) {
-        playVideo()
-      }
-      if (videoElement.ended) {
-        setCurrentVideoIndex((prev) => (prev + 1) % videos.length)
-      }
-    }, 2000)
-
-    // Fallback timer to switch videos
+    // Fallback timer
     switchTimerRef.current = setTimeout(() => {
-      if (isMounted && videoElement && !videoElement.ended) {
-        setCurrentVideoIndex((prev) => (prev + 1) % videos.length)
+      if (isMounted && currentVideo && !currentVideo.ended && !hasSwitched) {
+        switchToNextVideo()
       }
     }, 7000)
 
     // Cleanup
     return () => {
       isMounted = false
-      clearInterval(playInterval)
       if (switchTimerRef.current) {
         clearTimeout(switchTimerRef.current)
       }
-      videoElement.removeEventListener('canplay', handleCanPlay)
-      videoElement.removeEventListener('canplaythrough', handleCanPlay)
-      videoElement.removeEventListener('loadeddata', handleCanPlay)
-      videoElement.removeEventListener('ended', handleVideoEnd)
+      currentVideo.removeEventListener('timeupdate', handleTimeUpdate)
+      currentVideo.removeEventListener('ended', handleVideoEnd)
     }
-  }, [currentVideoIndex, videos.length])
+  }, [currentVideoIndex, activeVideo, videos])
 
-  // Handle user interaction for autoplay on all devices
+  // Handle user interaction for autoplay
   useEffect(() => {
     const handleInteraction = async () => {
-      if (videoRef.current?.paused) {
+      const currentVideo = activeVideo === 'video1' ? video1Ref.current : video2Ref.current
+      if (currentVideo?.paused) {
         try {
-          const video = videoRef.current
-          video.muted = true
-          video.volume = 0
-          await video.play()
+          await currentVideo.play()
         } catch (error) {
           // Ignore
         }
@@ -131,15 +184,15 @@ export default function Hero() {
         document.removeEventListener(event, handleInteraction)
       })
     }
-  }, [])
+  }, [activeVideo])
 
   return (
     <section className="relative h-screen w-full overflow-hidden pt-24 md:pt-20">
-      {/* Video Background - All Devices */}
+      {/* Video Background - Dual videos for seamless transitions */}
       <div className="absolute inset-0 z-[1]">
+        {/* Primary Video */}
         <video
-          ref={videoRef}
-          key={currentVideoIndex}
+          ref={video1Ref}
           autoPlay
           muted
           playsInline
@@ -148,38 +201,32 @@ export default function Hero() {
           controls={false}
           disablePictureInPicture
           disableRemotePlayback
-          className="w-full h-full object-cover"
-          poster="/pictures/Hero Poster Image.png"
+          className={`w-full h-full object-cover absolute inset-0 transition-opacity duration-300 ${
+            activeVideo === 'video1' ? 'opacity-100 z-10' : 'opacity-0 z-0'
+          }`}
           aria-label="Hero background video"
           style={{ pointerEvents: 'none' }}
-          onLoadedData={async (e) => {
-            const video = e.currentTarget
-            try {
-              video.muted = true
-              video.volume = 0
-              if (video.paused) {
-                await video.play()
-              }
-            } catch (error) {
-              // Ignore
-            }
-          }}
-          onCanPlay={async (e) => {
-            const video = e.currentTarget
-            try {
-              video.muted = true
-              video.volume = 0
-              if (video.paused) {
-                await video.play()
-              }
-            } catch (error) {
-              // Ignore
-            }
-          }}
-        >
-          <source src={videos[currentVideoIndex]} type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 video-overlay" />
+          fetchPriority="high"
+        />
+        
+        {/* Secondary Video for seamless switching */}
+        <video
+          ref={video2Ref}
+          muted
+          playsInline
+          preload="auto"
+          loop={false}
+          controls={false}
+          disablePictureInPicture
+          disableRemotePlayback
+          className={`w-full h-full object-cover absolute inset-0 transition-opacity duration-300 ${
+            activeVideo === 'video2' ? 'opacity-100 z-10' : 'opacity-0 z-0'
+          }`}
+          aria-label="Hero background video"
+          style={{ pointerEvents: 'none' }}
+        />
+        
+        <div className="absolute inset-0 video-overlay z-20" />
       </div>
 
       {/* Fallback gradient */}
