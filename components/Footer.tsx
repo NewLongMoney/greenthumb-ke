@@ -46,7 +46,7 @@ export default function Footer() {
               <div className="flex items-start space-x-2">
                 <MapPin className="w-5 h-5 mt-1 flex-shrink-0" />
                 <div>
-                  <p>Kalimoni, Nairobi</p>
+                  <p>Kalimoni, Kiambu</p>
                   <p className="text-sm text-gray-500">Kenya</p>
                 </div>
               </div>

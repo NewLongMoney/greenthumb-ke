@@ -5,7 +5,7 @@ export default function StructuredData() {
     "@id": "https://greenthumb-ke.vercel.app/#organization",
     "name": "GreenThumb KE",
     "alternateName": "GreenThumb Kenya",
-    "description": "Best irrigation systems and lawn care company in Kenya and East Africa. Professional lawn care services, smart irrigation installation, garden maintenance, and hydroponic systems in Nairobi, Kenya.",
+    "description": "Best irrigation systems and lawn care company in Kenya and East Africa. Professional lawn care services, smart irrigation installation, garden maintenance, and hydroponic systems in Kiambu and Nairobi, Kenya.",
     "url": "https://greenthumb-ke.vercel.app",
     "logo": "https://greenthumb-ke.vercel.app/logos/Green%20Thumb%20Logo%20Round.png",
     "image": "https://greenthumb-ke.vercel.app/logos/Green%20Thumb%20Logo%20Round.png",
@@ -14,14 +14,14 @@ export default function StructuredData() {
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Kalimoni",
-      "addressLocality": "Nairobi",
-      "addressRegion": "Nairobi County",
+      "addressLocality": "Kiambu",
+      "addressRegion": "Kiambu County",
       "addressCountry": "KE"
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": "-1.2921",
-      "longitude": "36.8219"
+      "latitude": "-1.1833",
+      "longitude": "36.7833"
     },
     "areaServed": [
       {
@@ -32,8 +32,8 @@ export default function StructuredData() {
         "@type": "GeoCircle",
         "geoMidpoint": {
           "@type": "GeoCoordinates",
-          "latitude": "-1.2921",
-          "longitude": "36.8219"
+          "latitude": "-1.1833",
+          "longitude": "36.7833"
         },
         "geoRadius": {
           "@type": "Distance",

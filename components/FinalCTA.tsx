@@ -110,7 +110,7 @@ export default function FinalCTA() {
             transition={{ duration: 0.6, delay: 0.5 }}
             className="mt-12 text-white/80"
           >
-            <p className="text-sm mb-2">📍 Visit our office in Kalimoni, Nairobi</p>
+            <p className="text-sm mb-2">📍 Visit our office in Kalimoni, Kiambu</p>
             <p className="text-sm">🌟 Trusted by homeowners and businesses across Kenya</p>
           </motion.div>
         </motion.div>
