@@ -38,7 +38,7 @@ export default function Hero() {
   }, [currentVideoIndex, videos.length])
 
   return (
-    <section className="relative h-screen w-full overflow-hidden">
+    <section className="relative h-screen w-full overflow-hidden pt-20">
       {/* Video Background */}
       <div className="absolute inset-0 z-[1]">
         <video

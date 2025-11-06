@@ -43,8 +43,8 @@ export default function Navigation() {
             whileHover={{ scale: 1.05 }}
             className="flex items-center"
           >
-            <div className={`rounded-full p-2 ${isScrolled ? 'bg-white shadow-md' : 'bg-white/90 backdrop-blur-sm'}`}>
-              <Logo variant="icon" light={false} width={50} height={50} />
+            <div className={`rounded-full ${isScrolled ? 'bg-white shadow-md' : 'bg-white/90 backdrop-blur-sm'} overflow-hidden`} style={{ width: '60px', height: '60px' }}>
+              <Logo variant="icon" light={false} width={60} height={60} />
             </div>
           </motion.a>
 
@@ -142,7 +142,7 @@ export default function Navigation() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-t border-gray-200"
+            className="md:hidden bg-white border-t border-gray-200 relative z-50"
           >
             <div className="px-4 py-4 space-y-3">
               <div className="space-y-2">

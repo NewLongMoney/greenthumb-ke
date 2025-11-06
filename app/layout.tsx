@@ -40,11 +40,15 @@ export const metadata: Metadata = {
   ],
   icons: {
     icon: [
+      { url: '/logos/Green Thumb Logo Round.png', sizes: '192x192', type: 'image/png' },
+      { url: '/logos/Green Thumb Logo Round.png', sizes: '96x96', type: 'image/png' },
+      { url: '/logos/Green Thumb Logo Round.png', sizes: '64x64', type: 'image/png' },
       { url: '/logos/Green Thumb Logo Round.png', sizes: '32x32', type: 'image/png' },
-      { url: '/logos/Green Thumb Logo Round.png', sizes: '16x16', type: 'image/png' },
     ],
     shortcut: '/logos/Green Thumb Logo Round.png',
-    apple: '/logos/Green Thumb Logo Round.png',
+    apple: [
+      { url: '/logos/Green Thumb Logo Round.png', sizes: '180x180', type: 'image/png' },
+    ],
   },
   openGraph: {
     title: 'Best Irrigation & Lawn Care Company in Kenya | GreenThumb KE',

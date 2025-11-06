@@ -78,18 +78,22 @@ export default function Logo({
   }
 
   return (
-    <div className={className}>
+    <div className={className} style={variant === 'icon' ? { width: '100%', height: '100%' } : {}}>
       <Image
         src={imgSrc}
         alt="GreenThumb KE Logo"
         width={width || defaultWidth}
         height={height || defaultHeight}
-        className="object-contain"
+        className={variant === 'icon' ? 'object-cover w-full h-full' : 'object-contain'}
         priority
         onError={handleError}
         loading="eager"
         quality={90}
-        style={{
+        style={variant === 'icon' ? {
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+        } : {
           maxWidth: '100%',
           height: 'auto',
         }}
