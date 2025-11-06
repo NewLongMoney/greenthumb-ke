@@ -38,7 +38,7 @@ export default function Hero() {
   }, [currentVideoIndex, videos.length])
 
   return (
-    <section className="relative h-screen w-full overflow-hidden pt-20">
+    <section className="relative h-screen w-full overflow-hidden pt-24 md:pt-20">
       {/* Video Background */}
       <div className="absolute inset-0 z-[1]">
         <video
@@ -75,7 +75,7 @@ export default function Hero() {
       </div>
 
       {/* Hero Content */}
-      <div className="relative z-10 h-full flex items-center">
+      <div className="relative z-10 h-full flex items-center pt-16 md:pt-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-4xl mx-auto text-center">
             {/* Main Headline */}
