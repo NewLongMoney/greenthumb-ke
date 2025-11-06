@@ -6,7 +6,6 @@ import { ArrowRight, Phone } from 'lucide-react'
 
 export default function Hero() {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0)
-  const [isMobile, setIsMobile] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const switchTimerRef = useRef<NodeJS.Timeout | null>(null)
 
@@ -17,27 +16,12 @@ export default function Hero() {
     '/videos/Greenthumb Website Shot 4.mp4',
   ]
 
-  // Detect mobile device
+  // Video playback for all devices
   useEffect(() => {
-    const checkMobile = () => {
-      const isMobileDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
-        (window.innerWidth <= 768 && 'ontouchstart' in window)
-      setIsMobile(isMobileDevice)
-    }
-    
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
-
-  // Video playback - desktop only
-  useEffect(() => {
-    if (isMobile) return // Skip video on mobile
-    
     const videoElement = videoRef.current
     if (!videoElement) return
 
-    // Set mobile-specific attributes
+    // Set attributes for mobile compatibility
     videoElement.setAttribute('playsinline', 'true')
     videoElement.setAttribute('webkit-playsinline', 'true')
     videoElement.muted = true
@@ -57,7 +41,7 @@ export default function Hero() {
           await videoElement.play()
         }
       } catch (error) {
-        // Autoplay blocked
+        // Autoplay blocked - will try again on user interaction
       }
     }
 
@@ -91,7 +75,7 @@ export default function Hero() {
       playVideo()
     }
 
-    // Retry playing if paused - reduced frequency
+    // Retry playing if paused
     const playInterval = setInterval(() => {
       if (isMounted && videoElement && videoElement.paused && !videoElement.ended) {
         playVideo()
@@ -99,7 +83,7 @@ export default function Hero() {
       if (videoElement.ended) {
         setCurrentVideoIndex((prev) => (prev + 1) % videos.length)
       }
-    }, 2000) // Reduced from 1000ms to 2000ms
+    }, 2000)
 
     // Fallback timer to switch videos
     switchTimerRef.current = setTimeout(() => {
@@ -120,12 +104,10 @@ export default function Hero() {
       videoElement.removeEventListener('loadeddata', handleCanPlay)
       videoElement.removeEventListener('ended', handleVideoEnd)
     }
-  }, [currentVideoIndex, videos.length, isMobile])
+  }, [currentVideoIndex, videos.length])
 
-  // Handle user interaction for autoplay - desktop only
+  // Handle user interaction for autoplay on all devices
   useEffect(() => {
-    if (isMobile) return
-    
     const handleInteraction = async () => {
       if (videoRef.current?.paused) {
         try {
@@ -149,71 +131,56 @@ export default function Hero() {
         document.removeEventListener(event, handleInteraction)
       })
     }
-  }, [isMobile])
+  }, [])
 
   return (
     <section className="relative h-screen w-full overflow-hidden pt-24 md:pt-20">
-      {/* Video Background - Desktop Only */}
-      {!isMobile && (
-        <div className="absolute inset-0 z-[1]">
-          <video
-            ref={videoRef}
-            key={currentVideoIndex}
-            autoPlay
-            muted
-            playsInline
-            preload="auto"
-            loop={false}
-            controls={false}
-            disablePictureInPicture
-            disableRemotePlayback
-            className="w-full h-full object-cover"
-            poster="/pictures/Hero Poster Image.png"
-            aria-label="Hero background video"
-            style={{ pointerEvents: 'none' }}
-            onLoadedData={async (e) => {
-              const video = e.currentTarget
-              try {
-                video.muted = true
-                video.volume = 0
-                if (video.paused) {
-                  await video.play()
-                }
-              } catch (error) {
-                // Ignore
+      {/* Video Background - All Devices */}
+      <div className="absolute inset-0 z-[1]">
+        <video
+          ref={videoRef}
+          key={currentVideoIndex}
+          autoPlay
+          muted
+          playsInline
+          preload="auto"
+          loop={false}
+          controls={false}
+          disablePictureInPicture
+          disableRemotePlayback
+          className="w-full h-full object-cover"
+          poster="/pictures/Hero Poster Image.png"
+          aria-label="Hero background video"
+          style={{ pointerEvents: 'none' }}
+          onLoadedData={async (e) => {
+            const video = e.currentTarget
+            try {
+              video.muted = true
+              video.volume = 0
+              if (video.paused) {
+                await video.play()
               }
-            }}
-            onCanPlay={async (e) => {
-              const video = e.currentTarget
-              try {
-                video.muted = true
-                video.volume = 0
-                if (video.paused) {
-                  await video.play()
-                }
-              } catch (error) {
-                // Ignore
+            } catch (error) {
+              // Ignore
+            }
+          }}
+          onCanPlay={async (e) => {
+            const video = e.currentTarget
+            try {
+              video.muted = true
+              video.volume = 0
+              if (video.paused) {
+                await video.play()
               }
-            }}
-          >
-            <source src={videos[currentVideoIndex]} type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 video-overlay" />
-        </div>
-      )}
-
-      {/* Static Background - Mobile Only */}
-      {isMobile && (
-        <div className="absolute inset-0 z-[1]">
-          <div 
-            className="w-full h-full bg-cover bg-center bg-no-repeat"
-            style={{
-              backgroundImage: 'url(/pictures/Hero Poster Image.png)',
-            }}
-          />
-          <div className="absolute inset-0 video-overlay" />
-        </div>
-      )}
+            } catch (error) {
+              // Ignore
+            }
+          }}
+        >
+          <source src={videos[currentVideoIndex]} type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 video-overlay" />
+      </div>
 
       {/* Fallback gradient */}
       <div className="absolute inset-0 z-0 bg-gradient-to-br from-primary-900 via-primary-700 to-primary-500">
