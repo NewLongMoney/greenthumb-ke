@@ -148,7 +148,7 @@ export default function ServiceGrid() {
                         {service.description}
                       </p>
                       <motion.a
-                        href={`#${service.id}`}
+                        href={`/services/${service.id}`}
                         whileHover={{ x: 5 }}
                         className="inline-flex items-center space-x-2 text-white font-semibold hover:text-brand-green transition-colors"
                       >

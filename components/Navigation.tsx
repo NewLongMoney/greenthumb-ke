@@ -19,10 +19,10 @@ export default function Navigation() {
   }, [])
 
   const services = [
-    { name: 'Lawn Care Services', href: '#lawn-care' },
-    { name: 'Irrigation Systems', href: '#irrigation' },
-    { name: 'Garden Services', href: '#garden' },
-    { name: 'Hydroponics', href: '#hydroponics' },
+    { name: 'Lawn Care Services', href: '/services/lawn-care' },
+    { name: 'Irrigation Systems', href: '/services/irrigation' },
+    { name: 'Garden Services', href: '/services/garden' },
+    { name: 'Hydroponics', href: '/services/hydroponics' },
   ]
 
   return (
@@ -104,7 +104,7 @@ export default function Navigation() {
               Gallery
             </a>
             <a
-              href="#blog"
+              href="/blog"
               className={`font-medium ${
                 isScrolled ? 'text-gray-700 hover:text-primary-600' : 'text-white hover:text-accent-lime'
               }`}
@@ -173,7 +173,7 @@ export default function Navigation() {
                 Gallery
               </a>
               <a
-                href="#blog"
+                href="/blog"
                 className="block py-2 text-gray-700 hover:text-primary-600"
                 onClick={() => setIsMobileMenuOpen(false)}
               >

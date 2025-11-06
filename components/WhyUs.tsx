@@ -93,10 +93,10 @@ export default function WhyUs() {
           className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8"
         >
           {[
-            { number: '500+', label: 'Happy Clients' },
-            { number: '1000+', label: 'Projects Completed' },
-            { number: '50%', label: 'Water Savings' },
-            { number: '15+', label: 'Years Experience' },
+            { number: '100+', label: 'Happy Clients' },
+            { number: '250+', label: 'Projects Completed' },
+            { number: '40%', label: 'Water Savings' },
+            { number: '5+', label: 'Years Experience' },
           ].map((stat, index) => (
             <motion.div
               key={stat.label}

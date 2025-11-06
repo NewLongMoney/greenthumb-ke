@@ -43,9 +43,12 @@ export default function Footer() {
                 <Mail className="w-5 h-5" />
                 <span>254greenthumb@gmail.com</span>
               </a>
-              <div className="flex items-center space-x-2">
-                <MapPin className="w-5 h-5" />
-                <span>Nairobi, Kenya</span>
+              <div className="flex items-start space-x-2">
+                <MapPin className="w-5 h-5 mt-1 flex-shrink-0" />
+                <div>
+                  <p>Kalimoni, Nairobi</p>
+                  <p className="text-sm text-gray-500">Kenya</p>
+                </div>
               </div>
             </div>
           </div>
@@ -54,16 +57,31 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-semibold text-lg mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              {['Services', 'About Us', 'Gallery', 'Blog', 'Contact'].map((link) => (
-                <li key={link}>
-                  <a
-                    href={`#${link.toLowerCase().replace(' ', '-')}`}
-                    className="hover:text-brand-green transition-colors"
-                  >
-                    {link}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <a href="/#services" className="hover:text-brand-green transition-colors">
+                  Services
+                </a>
+              </li>
+              <li>
+                <a href="/#about" className="hover:text-brand-green transition-colors">
+                  About Us
+                </a>
+              </li>
+              <li>
+                <a href="/#gallery" className="hover:text-brand-green transition-colors">
+                  Gallery
+                </a>
+              </li>
+              <li>
+                <a href="/blog" className="hover:text-brand-green transition-colors">
+                  Blog
+                </a>
+              </li>
+              <li>
+                <a href="/#contact" className="hover:text-brand-green transition-colors">
+                  Contact
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -71,16 +89,31 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-semibold text-lg mb-4">Our Services</h4>
             <ul className="space-y-2">
-              {['Lawn Care', 'Irrigation Systems', 'Garden Services', 'Hydroponics', 'Consultations'].map((service) => (
-                <li key={service}>
-                  <a
-                    href={`#${service.toLowerCase().replace(' ', '-')}`}
-                    className="hover:text-brand-green transition-colors"
-                  >
-                    {service}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <a href="/services/lawn-care" className="hover:text-brand-green transition-colors">
+                  Lawn Care
+                </a>
+              </li>
+              <li>
+                <a href="/services/irrigation" className="hover:text-brand-green transition-colors">
+                  Irrigation Systems
+                </a>
+              </li>
+              <li>
+                <a href="/services/garden" className="hover:text-brand-green transition-colors">
+                  Garden Services
+                </a>
+              </li>
+              <li>
+                <a href="/services/hydroponics" className="hover:text-brand-green transition-colors">
+                  Hydroponics
+                </a>
+              </li>
+              <li>
+                <a href="/#contact" className="hover:text-brand-green transition-colors">
+                  Consultations
+                </a>
+              </li>
             </ul>
           </div>
         </div>

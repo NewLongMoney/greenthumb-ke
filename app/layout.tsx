@@ -18,11 +18,11 @@ export const metadata: Metadata = {
   keywords: ['lawn care Kenya', 'irrigation systems', 'hydroponics', 'garden services', 'landscape design'],
   icons: {
     icon: [
-      { url: '/logos/Green Thumb Logo.png', sizes: '32x32', type: 'image/png' },
-      { url: '/logos/Green Thumb Logo.png', sizes: '16x16', type: 'image/png' },
+      { url: '/logos/Green Thumb Logo Round.png', sizes: '32x32', type: 'image/png' },
+      { url: '/logos/Green Thumb Logo Round.png', sizes: '16x16', type: 'image/png' },
     ],
-    shortcut: '/logos/Green Thumb Logo.png',
-    apple: '/logos/Green Thumb Logo.png',
+    shortcut: '/logos/Green Thumb Logo Round.png',
+    apple: '/logos/Green Thumb Logo Round.png',
   },
   openGraph: {
     title: 'GreenThumb KE - Transforming Landscapes, Inspiring Lives',
