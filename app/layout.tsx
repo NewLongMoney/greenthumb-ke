@@ -99,6 +99,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
+        {/* Preload first video for instant playback - only the first one to avoid blocking */}
+        <link rel="preload" href="/videos/Greenthumb Website Shot 1.mp4" as="video" type="video/mp4" fetchPriority="high" />
         {/* DNS prefetch for external resources - only when needed */}
         <link rel="dns-prefetch" href="https://www.tiktok.com" />
       </head>

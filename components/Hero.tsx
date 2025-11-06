@@ -19,6 +19,32 @@ export default function Hero() {
     '/videos/Greenthumb Website Shot 4.mp4',
   ]
 
+  // Preload all videos immediately using link elements for faster loading
+  useEffect(() => {
+    // Create link elements for preloading videos
+    const preloadLinks: HTMLLinkElement[] = []
+    videos.forEach((videoSrc, index) => {
+      const link = document.createElement('link')
+      link.rel = 'preload'
+      link.as = 'video'
+      link.href = videoSrc
+      link.type = 'video/mp4'
+      if (index === 0) {
+        link.setAttribute('fetchpriority', 'high')
+      }
+      document.head.appendChild(link)
+      preloadLinks.push(link)
+    })
+
+    return () => {
+      preloadLinks.forEach(link => {
+        if (link.parentNode) {
+          link.parentNode.removeChild(link)
+        }
+      })
+    }
+  }, [videos])
+
   // Continuous monitoring to ensure videos never pause
   useEffect(() => {
     const monitorVideos = () => {
@@ -42,7 +68,7 @@ export default function Hero() {
       forcePlay(video1)
       forcePlay(video2)
     }
-    
+
     // Check every 100ms to ensure videos never pause
     const monitorInterval = setInterval(monitorVideos, 100)
     
@@ -51,7 +77,7 @@ export default function Hero() {
     }
   }, [])
 
-  // Initialize first video
+  // Initialize first video with aggressive preloading
   useEffect(() => {
     const currentVideo = video1Ref.current
     if (!currentVideo) return
@@ -62,8 +88,21 @@ export default function Hero() {
     currentVideo.setAttribute('playsinline', 'true')
     currentVideo.setAttribute('webkit-playsinline', 'true')
     currentVideo.preload = 'auto'
+    // Set loading priority
+    if ('fetchPriority' in currentVideo) {
+      (currentVideo as any).fetchPriority = 'high'
+    }
     currentVideo.src = videos[0]
+    // Start loading immediately
     currentVideo.load()
+    
+    // Preload next video in background
+    const nextVideo = video2Ref.current
+    if (nextVideo) {
+      nextVideo.preload = 'auto'
+      nextVideo.src = videos[1]
+      nextVideo.load()
+    }
 
     const playVideo = async () => {
       try {
