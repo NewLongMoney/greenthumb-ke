@@ -16,96 +16,46 @@ export default function Hero() {
     '/videos/Greenthumb Website Shot 4.mp4',
   ]
 
-  // Handle user interaction to enable video playback
-  useEffect(() => {
-    const handleUserInteraction = async () => {
-      if (videoRef.current && videoRef.current.paused) {
-        try {
-          const video = videoRef.current
-          video.muted = true
-          video.volume = 0
-          await video.play()
-        } catch (error) {
-          // Ignore errors
-        }
-      }
-    }
-
-    // Listen for any user interaction
-    const events = ['touchstart', 'touchend', 'mousedown', 'click', 'scroll', 'keydown']
-    events.forEach(event => {
-      document.addEventListener(event, handleUserInteraction, { once: true, passive: true })
-    })
-
-    return () => {
-      events.forEach(event => {
-        document.removeEventListener(event, handleUserInteraction)
-      })
-    }
-  }, [])
-
   // Video playback and switching logic
   useEffect(() => {
     const videoElement = videoRef.current
     if (!videoElement) return
 
-    // Set all mobile-specific attributes
+    // Set mobile-specific attributes
     videoElement.setAttribute('playsinline', 'true')
     videoElement.setAttribute('webkit-playsinline', 'true')
-    videoElement.setAttribute('x5-playsinline', 'true')
-    videoElement.setAttribute('controls', 'false')
-    videoElement.removeAttribute('controls')
     videoElement.muted = true
     videoElement.volume = 0
     videoElement.playsInline = true
     videoElement.controls = false
-    if (videoElement.disablePictureInPicture !== undefined) {
-      videoElement.disablePictureInPicture = true
-    }
-    videoElement.style.pointerEvents = 'none'
-    videoElement.style.webkitAppearance = 'none'
-    videoElement.style.appearance = 'none'
 
     let isMounted = true
 
-    // Simple video play function
+    // Play video function
     const playVideo = async () => {
       if (!videoElement || !isMounted) return
-
       try {
         videoElement.muted = true
         videoElement.volume = 0
-        videoElement.controls = false
-        
         if (videoElement.paused) {
           await videoElement.play()
         }
       } catch (error) {
-        // Autoplay was prevented - will play on user interaction
+        // Autoplay blocked - will retry
       }
     }
 
-    // Handle video end - switch to next video
+    // Handle video end
     const handleVideoEnd = () => {
       if (isMounted) {
-        // Clear any existing timer
         if (switchTimerRef.current) {
           clearTimeout(switchTimerRef.current)
         }
-        // Switch to next video
-        setCurrentVideoIndex((prevIndex) => {
-          const nextIndex = (prevIndex + 1) % videos.length
-          return nextIndex
-        })
+        setCurrentVideoIndex((prev) => (prev + 1) % videos.length)
       }
     }
 
-    // Handle video errors
-    const handleError = (e: Event) => {
-      console.error('Video error:', e)
-    }
-
-    // Handle when video can play
+    // Handle video ready to play
     const handleCanPlay = () => {
       if (isMounted && videoElement && videoElement.paused) {
         playVideo()
@@ -117,34 +67,28 @@ export default function Hero() {
     videoElement.addEventListener('canplaythrough', handleCanPlay)
     videoElement.addEventListener('loadeddata', handleCanPlay)
     videoElement.addEventListener('ended', handleVideoEnd)
-    videoElement.addEventListener('error', handleError)
 
-    // Load the video source
+    // Load and try to play
     videoElement.load()
-
-    // Try to play immediately
+    
     if (videoElement.readyState >= 2) {
       playVideo()
     }
 
-    // Keep trying to play every 500ms if paused - ensure continuous playback
+    // Retry playing if paused
     const playInterval = setInterval(() => {
-      if (isMounted && videoElement) {
-        // If video is paused and not ended, try to play
-        if (videoElement.paused && !videoElement.ended) {
-          playVideo()
-        }
-        // If video ended but we're still on the same index, switch to next
-        if (videoElement.ended) {
-          setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length)
-        }
+      if (isMounted && videoElement && videoElement.paused && !videoElement.ended) {
+        playVideo()
       }
-    }, 500)
+      if (videoElement.ended) {
+        setCurrentVideoIndex((prev) => (prev + 1) % videos.length)
+      }
+    }, 1000)
 
-    // Auto-switch video every 7 seconds as fallback
+    // Fallback timer to switch videos
     switchTimerRef.current = setTimeout(() => {
       if (isMounted && videoElement && !videoElement.ended) {
-        setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length)
+        setCurrentVideoIndex((prev) => (prev + 1) % videos.length)
       }
     }, 7000)
 
@@ -159,9 +103,35 @@ export default function Hero() {
       videoElement.removeEventListener('canplaythrough', handleCanPlay)
       videoElement.removeEventListener('loadeddata', handleCanPlay)
       videoElement.removeEventListener('ended', handleVideoEnd)
-      videoElement.removeEventListener('error', handleError)
     }
   }, [currentVideoIndex, videos.length])
+
+  // Handle user interaction for autoplay
+  useEffect(() => {
+    const handleInteraction = async () => {
+      if (videoRef.current?.paused) {
+        try {
+          const video = videoRef.current
+          video.muted = true
+          video.volume = 0
+          await video.play()
+        } catch (error) {
+          // Ignore
+        }
+      }
+    }
+
+    const events = ['touchstart', 'click', 'scroll']
+    events.forEach(event => {
+      document.addEventListener(event, handleInteraction, { once: true, passive: true })
+    })
+
+    return () => {
+      events.forEach(event => {
+        document.removeEventListener(event, handleInteraction)
+      })
+    }
+  }, [])
 
   return (
     <section className="relative h-screen w-full overflow-hidden pt-24 md:pt-20">
@@ -173,27 +143,25 @@ export default function Hero() {
           autoPlay
           muted
           playsInline
-          preload="metadata"
+          preload="auto"
           loop={false}
           controls={false}
           disablePictureInPicture
           disableRemotePlayback
-          className="w-full h-full object-cover transition-opacity duration-500"
+          className="w-full h-full object-cover"
           poster="/pictures/Hero Poster Image.png"
-          aria-label="Hero background video showing lawn care and irrigation services in Kenya"
-          style={{ pointerEvents: 'none', WebkitAppearance: 'none', appearance: 'none' }}
+          aria-label="Hero background video"
+          style={{ pointerEvents: 'none' }}
           onLoadedData={async (e) => {
             const video = e.currentTarget
             try {
               video.muted = true
               video.volume = 0
-              video.controls = false
-              video.setAttribute('controls', 'false')
               if (video.paused) {
                 await video.play()
               }
             } catch (error) {
-              // Autoplay blocked - will retry
+              // Ignore
             }
           }}
           onCanPlay={async (e) => {
@@ -201,43 +169,21 @@ export default function Hero() {
             try {
               video.muted = true
               video.volume = 0
-              video.controls = false
-              video.setAttribute('controls', 'false')
               if (video.paused) {
                 await video.play()
               }
             } catch (error) {
-              // Autoplay blocked - will retry
-            }
-          }}
-          onPlay={() => {
-            // Video is playing - ensure controls stay hidden
-            const video = videoRef.current
-            if (video) {
-              video.controls = false
-              video.setAttribute('controls', 'false')
-            }
-          }}
-          onPause={() => {
-            // If video pauses, try to play again
-            const video = videoRef.current
-            if (video && !video.ended) {
-              video.play().catch(() => {
-                // Will retry via interval
-              })
+              // Ignore
             }
           }}
         >
           <source src={videos[currentVideoIndex]} type="video/mp4" />
-          Your browser does not support the video tag.
         </video>
-        {/* Video overlay for text readability */}
         <div className="absolute inset-0 video-overlay" />
       </div>
 
-      {/* Alternative: Beautiful gradient background as fallback */}
+      {/* Fallback gradient */}
       <div className="absolute inset-0 z-0 bg-gradient-to-br from-primary-900 via-primary-700 to-primary-500">
-        {/* Animated pattern overlay */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 -left-4 w-72 h-72 bg-white rounded-full mix-blend-overlay filter blur-3xl animate-blob" />
           <div className="absolute top-0 -right-4 w-72 h-72 bg-brand-green rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-2000" />
@@ -249,7 +195,6 @@ export default function Hero() {
       <div className="relative z-10 h-full flex items-center pt-8 md:pt-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-4xl mx-auto text-center">
-            {/* Main Headline */}
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -261,7 +206,6 @@ export default function Hero() {
               <span className="text-brand-green">Company in Kenya</span>
             </motion.h1>
 
-            {/* Sub-headline */}
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -272,14 +216,12 @@ export default function Hero() {
               across Kenya and East Africa. Trusted by hundreds of homeowners and businesses in Nairobi.
             </motion.p>
 
-            {/* CTA Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
               className="flex flex-col sm:flex-row items-center justify-center gap-6"
             >
-              {/* Primary CTA */}
               <motion.a
                 href="#contact"
                 whileHover={{ scale: 1.05, y: -2 }}
@@ -290,7 +232,6 @@ export default function Hero() {
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </motion.a>
 
-              {/* Secondary CTA */}
               <motion.a
                 href="#services"
                 whileHover={{ scale: 1.05 }}
@@ -302,7 +243,6 @@ export default function Hero() {
               </motion.a>
             </motion.div>
 
-            {/* Contact Info */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -355,7 +295,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
