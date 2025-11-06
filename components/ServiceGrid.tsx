@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Image from 'next/image'
 import { ArrowRight, Droplets, Sprout, Scissors, Leaf } from 'lucide-react'
 
 interface Service {
@@ -15,13 +16,14 @@ interface Service {
 
 export default function ServiceGrid() {
   const [hoveredService, setHoveredService] = useState<string | null>(null)
+  const [imageErrors, setImageErrors] = useState<Set<string>>(new Set())
 
   const services: Service[] = [
     {
       id: 'lawn-care',
       title: 'Lawn Care Services',
       icon: <Scissors className="w-12 h-12" />,
-      image: '/images/services/lawn-care.jpg', // Use actual image path or fallback to gradient
+      image: 'linear-gradient(135deg, #80a536 0%, #557026 100%)', // Gradient until images are added
       pitch: 'Perfection in Every Blade',
       description: 'Professional lawn maintenance that transforms your outdoor space into a pristine, healthy green oasis.',
     },
@@ -29,7 +31,7 @@ export default function ServiceGrid() {
       id: 'irrigation',
       title: 'Irrigation Systems',
       icon: <Droplets className="w-12 h-12" />,
-      image: '/images/services/irrigation.jpg', // Use actual image path or fallback to gradient
+      image: 'linear-gradient(135deg, #80a536 0%, #557026 100%)', // Gradient until images are added
       pitch: 'Smart Water, Smarter Gardens',
       description: 'Advanced irrigation solutions that save water, reduce costs, and keep your landscape thriving year-round.',
     },
@@ -37,7 +39,7 @@ export default function ServiceGrid() {
       id: 'garden',
       title: 'Garden Services',
       icon: <Sprout className="w-12 h-12" />,
-      image: '/images/services/garden.jpg', // Use actual image path or fallback to gradient
+      image: 'linear-gradient(135deg, #80a536 0%, #557026 100%)', // Gradient until images are added
       pitch: 'Where Beauty Meets Nature',
       description: 'Complete garden design and maintenance services that create stunning outdoor spaces tailored to your vision.',
     },
@@ -45,7 +47,7 @@ export default function ServiceGrid() {
       id: 'hydroponics',
       title: 'Hydroponics',
       icon: <Leaf className="w-12 h-12" />,
-      image: '/images/services/hydroponics.jpg', // Use actual image path or fallback to gradient
+      image: 'linear-gradient(135deg, #80a536 0%, #557026 100%)', // Gradient until images are added
       pitch: 'Future Growth',
       description: 'Revolutionary soilless food production systems for your home or business—sustainable, efficient, and innovative.',
     },
@@ -85,14 +87,25 @@ export default function ServiceGrid() {
               className="relative h-96 rounded-2xl overflow-hidden shadow-xl cursor-pointer group"
             >
               {/* Background with image or gradient */}
-              <div
-                className="absolute inset-0 transition-transform duration-500 group-hover:scale-110 bg-cover bg-center"
-                style={
-                  service.image.startsWith('/') || service.image.startsWith('http')
-                    ? { backgroundImage: `url(${service.image})` }
-                    : { background: service.image }
-                }
-              />
+              {imageErrors.has(service.id) || (!service.image.startsWith('/') && !service.image.startsWith('http')) ? (
+                <div
+                  className="absolute inset-0 transition-transform duration-500 group-hover:scale-110"
+                  style={{ background: 'linear-gradient(135deg, #80a536 0%, #557026 100%)' }}
+                />
+              ) : (
+                <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-110 overflow-hidden">
+                  <Image
+                    src={service.image}
+                    alt={service.title}
+                    fill
+                    className="object-cover"
+                    onError={() => {
+                      setImageErrors(prev => new Set(prev).add(service.id))
+                    }}
+                    unoptimized={service.image.startsWith('/')}
+                  />
+                </div>
+              )}
 
               {/* Overlay */}
               <div

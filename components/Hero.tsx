@@ -7,18 +7,27 @@ export default function Hero() {
   return (
     <section className="relative h-screen w-full overflow-hidden">
       {/* Video Background */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-[1]">
         <video
           autoPlay
           loop
           muted
           playsInline
-          preload="metadata"
+          preload="auto"
           className="w-full h-full object-cover"
           poster="/pictures/Hero Poster Image.png"
           aria-label="Hero background video showing landscape services"
+          onError={(e) => {
+            console.error('Video failed to load:', e)
+            // Hide video element if it fails
+            const video = e.currentTarget
+            video.style.display = 'none'
+          }}
         >
           <source src="/videos/Greenthumb Website Shot 1.mp4" type="video/mp4" />
+          <source src="/videos/Greenthumb Website Shot 2.mp4" type="video/mp4" />
+          <source src="/videos/Greenthumb Website Shot 3.mp4" type="video/mp4" />
+          <source src="/videos/Greenthumb Website Shot 4.mp4" type="video/mp4" />
         </video>
         {/* Video overlay for text readability */}
         <div className="absolute inset-0 video-overlay" />
