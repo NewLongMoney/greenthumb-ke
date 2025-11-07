@@ -4,9 +4,18 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import dynamic from 'next/dynamic'
 import { Menu, X, ChevronDown } from 'lucide-react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 // Lazy load Logo component
 const Logo = dynamic(() => import('./Logo'), { ssr: true })
+
+const SERVICES = [
+  { name: 'Lawn Care Services', href: '/services/lawn-care' },
+  { name: 'Irrigation Systems', href: '/services/irrigation' },
+  { name: 'Garden Services', href: '/services/garden' },
+  { name: 'Hydroponics', href: '/services/hydroponics' },
+]
 
 type NavigationProps = {
   variant?: 'standard' | 'overlay'
@@ -18,6 +27,7 @@ export default function Navigation({ variant = 'standard' }: NavigationProps = {
   const [hasScrolled, setHasScrolled] = useState(false)
 
   const isOverlay = variant === 'overlay'
+  const router = useRouter()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,12 +42,13 @@ export default function Navigation({ variant = 'standard' }: NavigationProps = {
     }
   }, [])
 
-  const services = [
-    { name: 'Lawn Care Services', href: '/services/lawn-care' },
-    { name: 'Irrigation Systems', href: '/services/irrigation' },
-    { name: 'Garden Services', href: '/services/garden' },
-    { name: 'Hydroponics', href: '/services/hydroponics' },
-  ]
+  const services = SERVICES
+
+  useEffect(() => {
+    SERVICES.forEach((service) => {
+      router.prefetch(service.href)
+    })
+  }, [router])
 
   return (
     <motion.nav
@@ -47,7 +58,7 @@ export default function Navigation({ variant = 'standard' }: NavigationProps = {
     >
       <div
         className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300 ${
-          isOverlay ? (hasScrolled ? 'py-2' : 'py-2') : hasScrolled ? 'py-2' : 'py-3'
+          isOverlay ? 'py-1 sm:py-2' : hasScrolled ? 'py-2' : 'py-3'
         }`}
       >
         <div
@@ -58,15 +69,13 @@ export default function Navigation({ variant = 'standard' }: NavigationProps = {
           <div className="pointer-events-none absolute inset-0 rounded-full bg-gradient-to-br from-white/70 via-white/40 to-white/30 opacity-80" />
           <div className="relative flex items-center justify-between">
             {/* Logo */}
-            <motion.a
-              href="/"
-              whileHover={{ scale: 1.05 }}
-              className="flex items-center"
-            >
-              <div className="rounded-full bg-white overflow-hidden shadow-sm ring-1 ring-black/10" style={{ width: '50px', height: '50px' }}>
-                <Logo variant="icon" light={false} width={50} height={50} />
-              </div>
-            </motion.a>
+            <Link href="/" className="flex items-center">
+              <motion.div whileHover={{ scale: 1.05 }} className="flex items-center">
+                <div className="rounded-full bg-white overflow-hidden shadow-sm ring-1 ring-black/10" style={{ width: '50px', height: '50px' }}>
+                  <Logo variant="icon" light={false} width={50} height={50} />
+                </div>
+              </motion.div>
+            </Link>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-6">
@@ -90,13 +99,13 @@ export default function Navigation({ variant = 'standard' }: NavigationProps = {
                       className="absolute top-full left-0 mt-2 w-56 overflow-hidden rounded-2xl border border-black/5 bg-white/90 py-2 shadow-xl backdrop-blur"
                     >
                       {services.map((service) => (
-                        <a
+                        <Link
                           key={service.name}
                           href={service.href}
                           className="block px-4 py-2 text-slate-700 transition-colors hover:bg-primary-50 hover:text-brand-green"
                         >
                           {service.name}
-                        </a>
+                        </Link>
                       ))}
                     </motion.div>
                   )}
@@ -115,12 +124,13 @@ export default function Navigation({ variant = 'standard' }: NavigationProps = {
               >
                 Gallery
               </a>
-              <a
+              <Link
                 href="/blog"
                 className="font-medium text-slate-800 transition-colors hover:text-brand-green"
+                prefetch
               >
                 Blog/Resources
-              </a>
+              </Link>
 
               {/* CTA Button */}
               <motion.a
@@ -158,14 +168,14 @@ export default function Navigation({ variant = 'standard' }: NavigationProps = {
               <div className="space-y-2">
                 <p className="text-sm font-semibold text-slate-500">Services</p>
                 {services.map((service) => (
-                  <a
+                  <Link
                     key={service.name}
                     href={service.href}
                     className="block pl-4 py-2 text-slate-600 transition-colors hover:text-brand-green"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {service.name}
-                  </a>
+                  </Link>
                 ))}
               </div>
               <a
@@ -182,13 +192,14 @@ export default function Navigation({ variant = 'standard' }: NavigationProps = {
               >
                 Gallery
               </a>
-              <a
+              <Link
                 href="/blog"
                 className="block py-2 text-slate-700 transition-colors hover:text-brand-green"
                 onClick={() => setIsMobileMenuOpen(false)}
+                prefetch
               >
                 Blog/Resources
-              </a>
+              </Link>
               <a
                 href="#contact"
                 className="block w-full rounded-2xl border border-brand-green/30 bg-brand-green px-6 py-3 text-center font-semibold text-white shadow-lg"

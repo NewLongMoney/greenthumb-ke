@@ -38,7 +38,7 @@ export default function Hero() {
     }
 
     let idleId: number | null = null
-    let fallbackTimeoutId: ReturnType<typeof setTimeout> | null = null
+    let fallbackTimeoutId: number | null = null
 
     if (typeof (window as any).requestIdleCallback === 'function') {
       idleId = (window as any).requestIdleCallback(() => {
@@ -55,7 +55,7 @@ export default function Hero() {
         ;(window as any).cancelIdleCallback(idleId)
       }
       if (fallbackTimeoutId !== null) {
-        clearTimeout(fallbackTimeoutId)
+        window.clearTimeout(fallbackTimeoutId)
       }
 
       preloadLinks.forEach(link => {
@@ -522,7 +522,7 @@ export default function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className="mt-12 flex flex-col items-center justify-center gap-4 rounded-3xl border border-white/20 bg-white/10 p-6 text-white/80 backdrop-blur-2xl sm:flex-row sm:gap-8"
+              className="mt-8 sm:mt-12 w-full flex flex-col items-center justify-center gap-4 rounded-3xl border border-white/20 bg-white/10 p-6 text-white/80 backdrop-blur-2xl sm:flex-row sm:gap-8"
             >
               <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
                 <a
