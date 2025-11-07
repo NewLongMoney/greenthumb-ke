@@ -26,15 +26,16 @@ export default function Navigation() {
       className="relative z-50 py-4"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white/90 backdrop-blur-md rounded-full shadow-lg px-6 py-3">
-          <div className="flex items-center justify-between">
+        <div className="relative overflow-hidden rounded-full border border-white/20 bg-white/10 px-6 py-3 shadow-[0_20px_45px_-15px_rgba(15,23,42,0.45)] backdrop-blur-2xl">
+          <div className="pointer-events-none absolute inset-0 rounded-full bg-gradient-to-br from-white/40 via-white/10 to-white/5 opacity-60" />
+          <div className="relative flex items-center justify-between">
             {/* Logo */}
             <motion.a
               href="/"
               whileHover={{ scale: 1.05 }}
               className="flex items-center"
             >
-              <div className="rounded-full bg-white shadow-md overflow-hidden" style={{ width: '50px', height: '50px' }}>
+              <div className="rounded-full bg-white/80 backdrop-blur overflow-hidden shadow-inner" style={{ width: '50px', height: '50px' }}>
                 <Logo variant="icon" light={false} width={50} height={50} />
               </div>
             </motion.a>
@@ -47,7 +48,7 @@ export default function Navigation() {
                 onMouseEnter={() => setIsServicesOpen(true)}
                 onMouseLeave={() => setIsServicesOpen(false)}
               >
-                <button className="flex items-center space-x-1 font-medium text-gray-700 hover:text-brand-green transition-colors">
+                <button className="flex items-center space-x-1 font-medium text-white/90 transition-colors hover:text-white">
                   <span>Services</span>
                   <ChevronDown className="w-4 h-4" />
                 </button>
@@ -58,13 +59,13 @@ export default function Navigation() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-0 mt-2 w-56 bg-white rounded-lg shadow-xl py-2 z-50"
+                      className="absolute top-full left-0 mt-2 w-56 overflow-hidden rounded-2xl border border-white/15 bg-white/10 py-2 shadow-xl backdrop-blur-xl z-50"
                     >
                       {services.map((service) => (
                         <a
                           key={service.name}
                           href={service.href}
-                          className="block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-brand-green transition-colors"
+                          className="block px-4 py-2 text-white/80 transition-colors hover:bg-white/10 hover:text-white"
                         >
                           {service.name}
                         </a>
@@ -76,19 +77,19 @@ export default function Navigation() {
 
               <a
                 href="#about"
-                className="font-medium text-gray-700 hover:text-brand-green transition-colors"
+                className="font-medium text-white/80 transition-colors hover:text-white"
               >
                 About Us
               </a>
               <a
                 href="#gallery"
-                className="font-medium text-gray-700 hover:text-brand-green transition-colors"
+                className="font-medium text-white/80 transition-colors hover:text-white"
               >
                 Gallery
               </a>
               <a
                 href="/blog"
-                className="font-medium text-gray-700 hover:text-brand-green transition-colors"
+                className="font-medium text-white/80 transition-colors hover:text-white"
               >
                 Blog/Resources
               </a>
@@ -107,7 +108,7 @@ export default function Navigation() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-3 rounded-lg min-w-[44px] min-h-[44px] flex items-center justify-center touch-manipulation text-gray-700 hover:bg-gray-100 transition-colors"
+              className="md:hidden flex min-h-[44px] min-w-[44px] items-center justify-center rounded-2xl border border-white/20 bg-white/10 p-3 text-white/90 shadow-inner backdrop-blur-lg transition-colors"
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
@@ -123,16 +124,16 @@ export default function Navigation() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white rounded-lg shadow-lg mt-2 mx-4 relative z-50"
+            className="relative z-50 mx-4 mt-2 overflow-hidden rounded-3xl border border-white/20 bg-white/10 shadow-[0_25px_50px_-25px_rgba(15,23,42,0.45)] backdrop-blur-2xl md:hidden"
           >
-            <div className="px-4 py-4 space-y-3">
+            <div className="space-y-3 px-4 py-4 text-white">
               <div className="space-y-2">
-                <p className="font-semibold text-gray-900 text-sm">Services</p>
+                <p className="text-sm font-semibold text-white/80">Services</p>
                 {services.map((service) => (
                   <a
                     key={service.name}
                     href={service.href}
-                    className="block pl-4 py-2 text-gray-600 hover:text-brand-green"
+                    className="block pl-4 py-2 text-white/70 transition-colors hover:text-white"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {service.name}
@@ -141,28 +142,28 @@ export default function Navigation() {
               </div>
               <a
                 href="#about"
-                className="block py-2 text-gray-700 hover:text-primary-600"
+                className="block py-2 text-white/80 transition-colors hover:text-white"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 About Us
               </a>
               <a
                 href="#gallery"
-                className="block py-2 text-gray-700 hover:text-primary-600"
+                className="block py-2 text-white/80 transition-colors hover:text-white"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Gallery
               </a>
               <a
                 href="/blog"
-                className="block py-2 text-gray-700 hover:text-primary-600"
+                className="block py-2 text-white/80 transition-colors hover:text-white"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Blog/Resources
               </a>
               <a
                 href="#contact"
-                className="block w-full text-center bg-brand-green text-white px-6 py-3 rounded-lg font-semibold"
+                className="block w-full rounded-2xl border border-white/20 bg-brand-green/80 px-6 py-3 text-center font-semibold text-white shadow-lg backdrop-blur"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Get a Free Quote

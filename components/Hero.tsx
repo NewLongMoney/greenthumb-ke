@@ -334,7 +334,7 @@ export default function Hero() {
   }, [])
 
   return (
-    <section className="relative h-screen w-full overflow-hidden">
+    <section className="relative min-h-screen w-full overflow-hidden">
       {/* Video Background - Dual videos for seamless transitions */}
         <div className="absolute inset-0 z-[1]">
         {/* Primary Video */}
@@ -418,14 +418,14 @@ export default function Hero() {
       </div>
 
       {/* Hero Content */}
-      <div className="relative z-10 h-full flex items-center pt-8 md:pt-0">
+      <div className="relative z-10 h-full flex flex-col justify-center pt-28 pb-16 md:pt-0 md:pb-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-4xl mx-auto text-center">
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight"
+              className="text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-6 leading-tight"
             >
               Best Irrigation & Lawn Care
               <br />
@@ -473,7 +473,7 @@ export default function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-white/80"
+              className="mt-12 flex flex-col items-center justify-center gap-4 rounded-3xl border border-white/20 bg-white/10 p-6 text-white/80 backdrop-blur-2xl sm:flex-row sm:gap-8"
             >
               <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
                 <a
