@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowLeft, Check, Phone, Mail, Sprout, DollarSign, TrendingUp, Users } from 'lucide-react'
+import { ArrowLeft, Check, Phone, Mail, Sprout, TrendingUp, Users } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Hydroponic Systems Installation in Kenya | Hydroponics Company - GreenThumb KE',

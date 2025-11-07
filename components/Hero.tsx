@@ -1,23 +1,22 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Phone } from 'lucide-react'
 
 export default function Hero() {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0)
-  const [nextVideoIndex, setNextVideoIndex] = useState(1)
   const [activeVideo, setActiveVideo] = useState<'video1' | 'video2'>('video1')
   const video1Ref = useRef<HTMLVideoElement>(null)
   const video2Ref = useRef<HTMLVideoElement>(null)
   const switchTimerRef = useRef<NodeJS.Timeout | null>(null)
 
-  const videos = [
+  const videos = useMemo(() => [
     '/videos/Greenthumb Website Shot 1.mp4',
     '/videos/Greenthumb Website Shot 2.mp4',
     '/videos/Greenthumb Website Shot 3.mp4',
     '/videos/Greenthumb Website Shot 4.mp4',
-  ]
+  ], [])
 
   // Preload all videos immediately using link elements for faster loading
   useEffect(() => {
@@ -150,7 +149,7 @@ export default function Hero() {
       currentVideo.removeEventListener('pause', handlePause)
       currentVideo.removeEventListener('waiting', handleWaiting)
     }
-  }, [])
+  }, [videos])
 
   // Handle seamless video transitions
   useEffect(() => {
@@ -354,8 +353,7 @@ export default function Hero() {
           }`}
             aria-label="Hero background video"
             style={{ pointerEvents: 'none' }}
-          fetchPriority="high"
-          onPause={(e) => {
+            onPause={(e) => {
             // Immediately resume if paused
               const video = e.currentTarget
             video.play().catch(() => {
