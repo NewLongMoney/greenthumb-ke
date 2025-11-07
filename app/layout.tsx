@@ -3,6 +3,7 @@ import { Montserrat } from 'next/font/google'
 import { viewport } from './viewport'
 import './globals.css'
 import StructuredData from '@/components/StructuredData'
+import { Analytics } from '@vercel/analytics/react'
 
 export { viewport }
 
@@ -107,6 +108,7 @@ export default function RootLayout({
       <body className={`${montserrat.variable} font-sans antialiased`}>
         <StructuredData />
         {children}
+        <Analytics />
       </body>
     </html>
   )
