@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import dynamic from 'next/dynamic'
 import { Menu, X, ChevronDown } from 'lucide-react'
@@ -11,6 +11,20 @@ const Logo = dynamic(() => import('./Logo'), { ssr: true })
 export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isServicesOpen, setIsServicesOpen] = useState(false)
+  const [hasScrolled, setHasScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setHasScrolled(window.scrollY > 10)
+    }
+
+    handleScroll()
+    window.addEventListener('scroll', handleScroll)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   const services = [
     { name: 'Lawn Care Services', href: '/services/lawn-care' },
@@ -23,10 +37,14 @@ export default function Navigation() {
     <motion.nav
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="relative z-50 py-4"
+      className={`sticky top-0 z-50 transition-all duration-300 ${hasScrolled ? 'py-2' : 'py-4'} backdrop-blur`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-full border border-white/40 bg-white/80 px-6 py-3 shadow-[0_20px_45px_-18px_rgba(15,23,42,0.45)] backdrop-blur-2xl">
+        <div
+          className={`relative overflow-hidden rounded-full border px-6 py-3 shadow-[0_20px_45px_-18px_rgba(15,23,42,0.45)] backdrop-blur-2xl transition-colors duration-300 ${
+            hasScrolled ? 'border-black/10 bg-white/95' : 'border-white/40 bg-white/80'
+          }`}
+        >
           <div className="pointer-events-none absolute inset-0 rounded-full bg-gradient-to-br from-white/70 via-white/40 to-white/30 opacity-80" />
           <div className="relative flex items-center justify-between">
             {/* Logo */}
