@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowLeft, Check, Phone, Mail, Sprout, TrendingUp, Users } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -99,6 +100,11 @@ export default function HydroponicsPage() {
     },
   ]
 
+  const createWhatsappLink = (packageName: string) => {
+    const message = `Hi GreenThumb KE, I'm interested in the ${packageName} hydroponics package.`
+    return `https://wa.me/254702005560?text=${encodeURIComponent(message)}`
+  }
+
   const crops = [
     { name: 'Lettuce', time: '3-4 weeks', profit: 'High' },
     { name: 'Spinach', time: '4-5 weeks', profit: 'High' },
@@ -139,6 +145,22 @@ export default function HydroponicsPage() {
               <Mail className="w-5 h-5 mr-2" />
               Get a Quote
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Feature Image */}
+      <section className="bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16">
+          <div className="relative aspect-[16/9] w-full rounded-3xl overflow-hidden shadow-2xl border border-white/40">
+            <Image
+              src="/pictures/Hydroponics Services.png"
+              alt="Hydroponic systems installed by GreenThumb KE"
+              fill
+              className="object-cover"
+              priority
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1080px"
+            />
           </div>
         </div>
       </section>
@@ -268,7 +290,7 @@ export default function HydroponicsPage() {
                   ))}
                 </ul>
                 <a 
-                  href="#contact"
+                  href={createWhatsappLink(pkg.name)}
                   className={`block text-center py-3 px-6 rounded-lg font-semibold transition-colors ${
                     index === 1
                       ? 'bg-brand-green text-white hover:bg-primary-600'

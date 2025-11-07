@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowLeft, Check, Phone, Mail, Flower2, TreeDeciduous, Palette, Wrench } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -99,6 +100,11 @@ export default function GardenPage() {
     },
   ]
 
+  const createWhatsappLink = (packageName: string) => {
+    const message = `Hi GreenThumb KE, I'm interested in the ${packageName} garden package.`
+    return `https://wa.me/254702005560?text=${encodeURIComponent(message)}`
+  }
+
   return (
     <main className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -130,6 +136,22 @@ export default function GardenPage() {
               <Mail className="w-5 h-5 mr-2" />
               Get a Quote
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Feature Image */}
+      <section className="bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16">
+          <div className="relative aspect-[16/9] w-full rounded-3xl overflow-hidden shadow-2xl border border-white/40">
+            <Image
+              src="/pictures/Gardening Services.png"
+              alt="Garden services in Kenya"
+              fill
+              className="object-cover"
+              priority
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1080px"
+            />
           </div>
         </div>
       </section>
@@ -230,7 +252,7 @@ export default function GardenPage() {
                   ))}
                 </ul>
                 <a 
-                  href="#contact"
+                  href={createWhatsappLink(pkg.name)}
                   className={`block text-center py-3 px-6 rounded-lg font-semibold transition-colors ${
                     index === 1
                       ? 'bg-brand-green text-white hover:bg-primary-600'
