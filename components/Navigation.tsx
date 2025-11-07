@@ -8,10 +8,16 @@ import { Menu, X, ChevronDown } from 'lucide-react'
 // Lazy load Logo component
 const Logo = dynamic(() => import('./Logo'), { ssr: true })
 
-export default function Navigation() {
+type NavigationProps = {
+  variant?: 'standard' | 'overlay'
+}
+
+export default function Navigation({ variant = 'standard' }: NavigationProps = {}) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isServicesOpen, setIsServicesOpen] = useState(false)
   const [hasScrolled, setHasScrolled] = useState(false)
+
+  const isOverlay = variant === 'overlay'
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,9 +43,13 @@ export default function Navigation() {
     <motion.nav
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`sticky top-0 z-50 transition-all duration-300 ${hasScrolled ? 'py-2' : 'py-4'} backdrop-blur`}
+      className={`${isOverlay ? 'fixed inset-x-0 top-0' : 'sticky top-0'} z-50 transition-all duration-300 backdrop-blur`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div
+        className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300 ${
+          isOverlay ? (hasScrolled ? 'py-2' : 'py-2') : hasScrolled ? 'py-2' : 'py-3'
+        }`}
+      >
         <div
           className={`relative overflow-hidden rounded-full border px-6 py-3 shadow-[0_20px_45px_-18px_rgba(15,23,42,0.45)] backdrop-blur-2xl transition-colors duration-300 ${
             hasScrolled ? 'border-black/10 bg-white/95' : 'border-white/40 bg-white/80'

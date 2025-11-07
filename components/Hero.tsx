@@ -18,24 +18,46 @@ export default function Hero() {
     '/videos/Greenthumb Website Shot 4.mp4',
   ], [])
 
-  // Preload all videos immediately using link elements for faster loading
+  // Preload videos without blocking initial render using requestIdleCallback fallback
   useEffect(() => {
-    // Create link elements for preloading videos
     const preloadLinks: HTMLLinkElement[] = []
-    videos.forEach((videoSrc, index) => {
-      const link = document.createElement('link')
-      link.rel = 'preload'
-      link.as = 'video'
-      link.href = videoSrc
-      link.type = 'video/mp4'
-      if (index === 0) {
-        link.setAttribute('fetchpriority', 'high')
-      }
-      document.head.appendChild(link)
-      preloadLinks.push(link)
-    })
+
+    const createPreloadLinks = () => {
+      videos.forEach((videoSrc, index) => {
+        const link = document.createElement('link')
+        link.rel = 'preload'
+        link.as = 'video'
+        link.href = videoSrc
+        link.type = 'video/mp4'
+        if (index === 0) {
+          link.setAttribute('fetchpriority', 'high')
+        }
+        document.head.appendChild(link)
+        preloadLinks.push(link)
+      })
+    }
+
+    let idleId: number | null = null
+    let fallbackTimeoutId: ReturnType<typeof setTimeout> | null = null
+
+    if (typeof (window as any).requestIdleCallback === 'function') {
+      idleId = (window as any).requestIdleCallback(() => {
+        createPreloadLinks()
+      })
+    } else {
+      fallbackTimeoutId = window.setTimeout(() => {
+        createPreloadLinks()
+      }, 200)
+    }
 
     return () => {
+      if (idleId !== null && typeof (window as any).cancelIdleCallback === 'function') {
+        ;(window as any).cancelIdleCallback(idleId)
+      }
+      if (fallbackTimeoutId !== null) {
+        clearTimeout(fallbackTimeoutId)
+      }
+
       preloadLinks.forEach(link => {
         if (link.parentNode) {
           link.parentNode.removeChild(link)
@@ -68,11 +90,38 @@ export default function Hero() {
       forcePlay(video2)
     }
 
-    // Check every 100ms to ensure videos never pause
-    const monitorInterval = setInterval(monitorVideos, 100)
-    
+    let monitorInterval: ReturnType<typeof setInterval> | null = null
+
+    const startMonitoring = () => {
+      if (!monitorInterval) {
+        monitorInterval = setInterval(monitorVideos, 250)
+      }
+    }
+
+    const stopMonitoring = () => {
+      if (monitorInterval) {
+        clearInterval(monitorInterval)
+        monitorInterval = null
+      }
+    }
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        startMonitoring()
+      } else {
+        stopMonitoring()
+      }
+    }
+
+    if (document.visibilityState === 'visible') {
+      startMonitoring()
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
     return () => {
-      clearInterval(monitorInterval)
+      stopMonitoring()
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
   }, [])
 
